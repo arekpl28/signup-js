@@ -4,11 +4,13 @@ import { useState } from "react";
 import AuthButton from "./AuthButton";
 import { useRouter } from "next/navigation";
 import { signUp } from "@/actions/auth";
+import { useTranslation } from "react-i18next";
 
 const SignUpForm = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { t } = useTranslation();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -32,11 +34,11 @@ const SignUpForm = () => {
       <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-200">
-            Username
+            {t("username")}
           </label>
           <input
             type="text"
-            placeholder="Username"
+            placeholder={t("username")}
             id="username"
             name="username"
             className="mt-1 w-full px-4 p-2 h-10 rounded-md border border-gray-200 bg-white text-sm text-gray-700"
@@ -56,18 +58,18 @@ const SignUpForm = () => {
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-200">
-            Password
+            {t("password")}
           </label>
           <input
             type="password"
-            placeholder="Password"
+            placeholder={t("password")}
             name="password"
             id="password"
             className="mt-1 w-full px-4 p-2 h-10 rounded-md border border-gray-200 bg-white text-sm text-gray-700"
           />
         </div>
         <div className="mt-4">
-          <AuthButton type="Sign up" loading={loading} />
+          <AuthButton type="sign_up" loading={loading} />
         </div>
         {error && <p className="text-red-500">{error}</p>}
       </form>

@@ -1,8 +1,12 @@
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
 import Logout from "./Logout";
+import initTranslations from "@/app/i18n";
+import { extractLocale } from "@/lib/locale";
 
-const Navbar = async () => {
+const Navbar = async ({ locale }) => {
+  const { t } = await initTranslations(locale, ["home"]);
+
   const supabase = await createClient();
   const {
     data: { user },
@@ -22,7 +26,7 @@ const Navbar = async () => {
           {!user ? (
             <Link href="/login">
               <div className="bg-blue-600 text-white text-sm px-4 py-2 rounded-sm">
-                Login
+                {t("login")}
               </div>
             </Link>
           ) : (

@@ -25,11 +25,13 @@ export function generateStaticParams() {
   return i18nConfig.locales.map((locale) => ({ locale }));
 }
 
+const namespaces = ["home"];
+
 export default async function RootLayout(props) {
   const { children } = props;
   const params = await getParams(props);
   const locale = params.locale;
-  const namespaces = ["home"];
+
   const { resources } = await initTranslations(locale, namespaces);
 
   return (
@@ -43,7 +45,7 @@ export default async function RootLayout(props) {
           resources={resources}
         >
           <div className="mx-auto max-w-screen-lg h-screen flex flex-col">
-            <Navbar />
+            <Navbar locale={locale} />
             <div className="flex-grow">{children}</div>
           </div>
         </TranslationsProvider>
