@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Dialog } from "@headlessui/react";
+import { Dialog, DialogTitle, DialogPanel } from "@headlessui/react";
 import { X } from "lucide-react";
 
 export default function AddMealModal({ isOpen, onClose }) {
@@ -30,11 +30,11 @@ export default function AddMealModal({ isOpen, onClose }) {
     <Dialog open={isOpen} onClose={onClose} className="fixed z-50 inset-0">
       <div className="fixed inset-0 bg-black/30" onClick={onClose} />
       <div className="fixed inset-0 flex items-center justify-center">
-        <Dialog.Panel className="bg-white rounded-xl p-6 w-[90%] max-w-lg">
+        <DialogPanel className="bg-white rounded-xl p-6 w-[90%] max-w-lg">
           <div className="flex justify-between items-center mb-4">
-            <Dialog.Title className="text-xl font-bold">
+            <DialogTitle className="text-xl font-bold">
               Dodaj posiłek
-            </Dialog.Title>
+            </DialogTitle>
             <button onClick={onClose}>
               <X />
             </button>
@@ -90,7 +90,7 @@ export default function AddMealModal({ isOpen, onClose }) {
               Zapisz
             </button>
           </form>
-        </Dialog.Panel>
+        </DialogPanel>
       </div>
     </Dialog>
   );
