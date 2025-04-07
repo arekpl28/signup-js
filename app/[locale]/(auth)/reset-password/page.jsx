@@ -1,5 +1,5 @@
 import initTranslations from "@/app/i18n";
-import ResetPassword from "@/components/ResetPassword";
+import ResetPassword from "@/components/auth/ResetPassword";
 import { extractLocale } from "@/lib/locale";
 
 export default async function ResetPasswordPage(props) {

@@ -1,4 +1,4 @@
-import ForgotPassword from "@/components/ForgotPassword";
+import ForgotPassword from "@/components/auth/ForgotPassword";
 import initTranslations from "@/app/i18n";
 import { extractLocale } from "@/lib/locale";
 

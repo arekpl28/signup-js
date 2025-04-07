@@ -1,6 +1,6 @@
 import initTranslations from "@/app/i18n";
-import LoginForm from "@/components/LoginForm";
-import LoginGithub from "@/components/LoginGithub";
+import LoginForm from "@/components/auth/LoginForm";
+import LoginGithub from "@/components/auth/LoginGithub";
 import { extractLocale } from "@/lib/locale";
 import Link from "next/link";
 

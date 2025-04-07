@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
-import Logout from "./Logout";
+import Logout from "../auth/Logout";
 import initTranslations from "@/app/i18n";
 import { extractLocale } from "@/lib/locale";
 
@@ -16,7 +16,7 @@ const Navbar = async ({ locale }) => {
     <nav className="border-b bg-background w-full flex items-center">
       <div className="flex w-full items-center justify-between my-4">
         <Link className="font-bold" href="/">
-          Home
+          Menu
         </Link>
 
         <div className="flex items-center gap-x-5">

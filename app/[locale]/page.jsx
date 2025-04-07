@@ -1,9 +1,9 @@
-import ClientComponent from "@/components/ClientComponent";
+import MenuList from "@/components/menu/MenuList";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <ClientComponent />
+    <main className="flex flex-col items-start p-4">
+      <MenuList />
     </main>
   );
 }
