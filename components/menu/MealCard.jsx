@@ -4,7 +4,6 @@ export default function MealCard({
   title,
   image,
   price,
-  description,
   ingredients,
   allergens,
 }) {
