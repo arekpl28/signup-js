@@ -4,42 +4,44 @@ import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 
-export default function AllergenSelectorModal({
+export default function IngredientSelectorModal({
   isOpen,
   onClose,
   selected,
   onSave,
 }) {
-  const [allergens, setAllergens] = useState([]);
-  const [selectedAllergens, setSelectedAllergens] = useState(selected || []);
+  const [ingredients, setIngredients] = useState([]);
+  const [selectedIngredients, setSelectedIngredients] = useState(
+    selected || []
+  );
 
   useEffect(() => {
-    const fetchAllergens = async () => {
+    const fetchIngredients = async () => {
       const supabase = createClient();
       const { data, error } = await supabase
-        .from("allergens")
+        .from("ingredients")
         .select("id, name")
         .order("name", { ascending: true });
 
-      if (!error) setAllergens(data);
+      if (!error) setIngredients(data);
     };
 
     if (isOpen) {
-      fetchAllergens();
+      fetchIngredients();
     }
   }, [isOpen]);
 
-  const toggleAllergen = (allergen) => {
-    setSelectedAllergens((prev) => {
-      const exists = prev.find((a) => a.id === allergen.id);
+  const toggleIngredient = (ingredient) => {
+    setSelectedIngredients((prev) => {
+      const exists = prev.find((i) => i.id === ingredient.id);
       return exists
-        ? prev.filter((a) => a.id !== allergen.id)
-        : [...prev, allergen];
+        ? prev.filter((i) => i.id !== ingredient.id)
+        : [...prev, ingredient];
     });
   };
 
   const handleSave = () => {
-    onSave(selectedAllergens);
+    onSave(selectedIngredients);
     onClose();
   };
 
@@ -49,17 +51,19 @@ export default function AllergenSelectorModal({
       <div className="fixed inset-0 flex items-center justify-center">
         <DialogPanel className="bg-white rounded-xl p-6 w-[90%] max-w-lg">
           <DialogTitle className="text-xl font-bold mb-4">
-            Wybierz alergeny
+            Wybierz składniki
           </DialogTitle>
           <div className="flex flex-col gap-2 max-h-64 overflow-y-auto">
-            {allergens.map((allergen) => (
-              <label key={allergen.id} className="flex items-center gap-2">
+            {ingredients.map((ingredient) => (
+              <label key={ingredient.id} className="flex items-center gap-2">
                 <input
                   type="checkbox"
-                  checked={selectedAllergens.some((a) => a.id === allergen.id)}
-                  onChange={() => toggleAllergen(allergen)}
+                  checked={selectedIngredients.some(
+                    (i) => i.id === ingredient.id
+                  )}
+                  onChange={() => toggleIngredient(ingredient)}
                 />
-                {allergen.name}
+                {ingredient.name}
               </label>
             ))}
           </div>

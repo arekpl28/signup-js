@@ -4,6 +4,10 @@ import { useEffect, useState } from "react";
 import { Dialog, DialogTitle, DialogPanel } from "@headlessui/react";
 import { X } from "lucide-react";
 import { getCurrencies } from "@/actions/currencies";
+import { getCategories } from "@/actions/categories";
+import { submitMeal } from "@/actions/meals";
+import AllergenSelectorModal from "./AllergenSelectorModal";
+import IngredientSelectorModal from "./IngredientSelectorModal";
 
 export default function AddMealModal({ isOpen, onClose }) {
   const [form, setForm] = useState({
@@ -12,15 +16,23 @@ export default function AddMealModal({ isOpen, onClose }) {
     currency: "$",
     category: "",
     ingredients: "",
-    allergens: "",
     image: null,
   });
+  const [isAllergenModalOpen, setIsAllergenModalOpen] = useState(false);
+  const [selectedAllergens, setSelectedAllergens] = useState([]);
   const [currencies, setCurrencies] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [isIngredientModalOpen, setIsIngredientModalOpen] = useState(false);
+  const [selectedIngredients, setSelectedIngredients] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
-      const res = await getCurrencies();
-      setCurrencies(res);
+      const [curRes, catRes] = await Promise.all([
+        getCurrencies(),
+        getCategories(),
+      ]);
+      setCurrencies(curRes);
+      setCategories(catRes);
     }
     fetchData();
   }, []);
@@ -30,9 +42,17 @@ export default function AddMealModal({ isOpen, onClose }) {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: submit logic
+    await submitMeal({
+      name: form.name,
+      price_value: form.price,
+      currency_code: form.currency,
+      category_id: form.category,
+      ingredients: selectedIngredients,
+      allergens: selectedAllergens,
+    });
+
     onClose();
   };
 
@@ -89,25 +109,52 @@ export default function AddMealModal({ isOpen, onClose }) {
               value={form.category}
             >
               <option value="">-- Wybierz kategorię --</option>
-              <option value="Zupy">Zupy</option>
-              <option value="Dania główne">Dania główne</option>
-              <option value="Desery">Desery</option>
-              <option value="Napoje">Napoje</option>
+              {categories.map((cat) => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.name}
+                </option>
+              ))}
             </select>
-            <input
-              name="ingredients"
-              placeholder="Składniki (oddzielone przecinkami)"
-              className="border p-2 rounded"
-              onChange={handleChange}
-              value={form.ingredients}
-            />
-            <input
-              name="allergens"
-              placeholder="Alergeny (oddzielone przecinkami)"
-              className="border p-2 rounded"
-              onChange={handleChange}
-              value={form.allergens}
-            />
+            <div>
+              <button
+                type="button"
+                className="bg-gray-200 text-black px-4 py-2 rounded mb-2"
+                onClick={() => setIsIngredientModalOpen(true)}
+              >
+                Wybierz składniki
+              </button>
+              <div className="text-sm text-gray-700">
+                {selectedIngredients.length > 0 ? (
+                  <ul className="list-disc list-inside text-black">
+                    {selectedIngredients.map((ingredient) => (
+                      <li key={ingredient.id}>{ingredient.name}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <span>Brak wybranych składników.</span>
+                )}
+              </div>
+            </div>
+            <div>
+              <button
+                type="button"
+                className="bg-gray-200 text-black px-4 py-2 rounded mb-2"
+                onClick={() => setIsAllergenModalOpen(true)}
+              >
+                Wybierz alergeny
+              </button>
+              <div className="text-sm text-gray-700">
+                {selectedAllergens.length > 0 ? (
+                  <ul className="list-disc list-inside text-black">
+                    {selectedAllergens.map((allergen) => (
+                      <li key={allergen.id}>{allergen.name}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <span>Brak wybranych alergenów.</span>
+                )}
+              </div>
+            </div>
             <input
               type="file"
               name="image"
@@ -121,6 +168,18 @@ export default function AddMealModal({ isOpen, onClose }) {
               Zapisz
             </button>
           </form>
+          <AllergenSelectorModal
+            isOpen={isAllergenModalOpen}
+            onClose={() => setIsAllergenModalOpen(false)}
+            selected={selectedAllergens}
+            onSave={setSelectedAllergens}
+          />
+          <IngredientSelectorModal
+            isOpen={isIngredientModalOpen}
+            onClose={() => setIsIngredientModalOpen(false)}
+            selected={selectedIngredients}
+            onSave={setSelectedIngredients}
+          />
         </DialogPanel>
       </div>
     </Dialog>
