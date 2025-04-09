@@ -50,7 +50,10 @@ export default function MenuListWrapper() {
       </div>
       <AddMealModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={() => {
+          setIsModalOpen(false);
+          setSelectedMeal(null);
+        }}
         initialData={selectedMeal}
       />
     </>

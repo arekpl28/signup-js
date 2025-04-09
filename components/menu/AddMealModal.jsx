@@ -1,72 +1,30 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Dialog, DialogTitle, DialogPanel } from "@headlessui/react";
 import { X } from "lucide-react";
-import { getCurrencies } from "@/actions/currencies";
-import { getCategories } from "@/actions/categories";
-import { submitMeal } from "@/actions/meals";
-import { uploadMealImage } from "@/utils/uploadMealImage";
+import { useAddMealForm } from "./useAddMealForm";
 import AllergenSelectorModal from "./AllergenSelectorModal";
 import IngredientSelectorModal from "./IngredientSelectorModal";
 
 export default function AddMealModal({ isOpen, onClose }) {
-  const [form, setForm] = useState({
-    name: "",
-    price: "",
-    currency: "$",
-    category: "",
-    ingredients: "",
-    image: null,
-  });
-  const [isAllergenModalOpen, setIsAllergenModalOpen] = useState(false);
-  const [selectedAllergens, setSelectedAllergens] = useState([]);
-  const [currencies, setCurrencies] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [isIngredientModalOpen, setIsIngredientModalOpen] = useState(false);
-  const [selectedIngredients, setSelectedIngredients] = useState([]);
-
-  useEffect(() => {
-    async function fetchData() {
-      const [curRes, catRes] = await Promise.all([
-        getCurrencies(),
-        getCategories(),
-      ]);
-      setCurrencies(curRes);
-      setCategories(catRes);
-    }
-    fetchData();
-  }, []);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    let imageUrl = null; // Initialize imageUrl
-    if (form.image) {
-      try {
-        imageUrl = await uploadMealImage(form.image); // Upload image
-      } catch (err) {
-        console.error(err);
-        alert("Błąd przy przesyłaniu zdjęcia");
-        return;
-      }
-    }
-    await submitMeal({
-      name: form.name,
-      price_value: form.price,
-      currency_code: form.currency,
-      category_id: form.category,
-      ingredients: selectedIngredients,
-      allergens: selectedAllergens,
-      image_url: imageUrl,
-    });
-
-    onClose();
-  };
+  const {
+    form,
+    setForm,
+    handleChange,
+    handleSubmit,
+    selectedAllergens,
+    setSelectedAllergens,
+    selectedIngredients,
+    setSelectedIngredients,
+    currencies,
+    categories,
+    isAllergenModalOpen,
+    setIsAllergenModalOpen,
+    isIngredientModalOpen,
+    setIsIngredientModalOpen,
+    isSubmitting, // <-- add this line
+  } = useAddMealForm(onClose);
 
   return (
     <Dialog open={isOpen} onClose={onClose} className="fixed z-50 inset-0">
@@ -90,6 +48,7 @@ export default function AddMealModal({ isOpen, onClose }) {
               onChange={handleChange}
               value={form.name}
               required
+              disabled={isSubmitting}
             />
             <input
               name="price"
@@ -100,12 +59,14 @@ export default function AddMealModal({ isOpen, onClose }) {
               onChange={handleChange}
               value={form.price}
               required
+              disabled={isSubmitting}
             />
             <select
               name="currency"
               value={form.currency}
               onChange={handleChange}
               className="border p-2 rounded"
+              disabled={isSubmitting}
             >
               <option value="">Wybierz walutę</option>
               {currencies.map((cur) => (
@@ -119,6 +80,7 @@ export default function AddMealModal({ isOpen, onClose }) {
               className="border p-2 rounded"
               onChange={handleChange}
               value={form.category}
+              disabled={isSubmitting}
             >
               <option value="">-- Wybierz kategorię --</option>
               {categories.map((cat) => (
@@ -132,6 +94,7 @@ export default function AddMealModal({ isOpen, onClose }) {
                 type="button"
                 className="bg-gray-200 text-black px-4 py-2 rounded mb-2"
                 onClick={() => setIsIngredientModalOpen(true)}
+                disabled={isSubmitting}
               >
                 Wybierz składniki
               </button>
@@ -152,6 +115,7 @@ export default function AddMealModal({ isOpen, onClose }) {
                 type="button"
                 className="bg-gray-200 text-black px-4 py-2 rounded mb-2"
                 onClick={() => setIsAllergenModalOpen(true)}
+                disabled={isSubmitting}
               >
                 Wybierz alergeny
               </button>
@@ -170,21 +134,23 @@ export default function AddMealModal({ isOpen, onClose }) {
             <input
               type="file"
               name="image"
-              accept="image/*" // Add accept attribute
-              multiple={false} // Add multiple attribute
+              accept="image/*"
+              multiple={false}
               className="border p-2 rounded"
               onChange={(e) => {
                 const file = e.target.files?.[0];
                 if (file) {
-                  setForm((prev) => ({ ...prev, image: file })); // Update image state
+                  setForm((prev) => ({ ...prev, image: file }));
                 }
               }}
+              disabled={isSubmitting}
             />
             <button
               type="submit"
-              className="bg-black text-white py-2 rounded hover:opacity-90"
+              className="bg-black text-white py-2 rounded hover:opacity-90 disabled:opacity-50"
+              disabled={isSubmitting}
             >
-              Zapisz
+              {isSubmitting ? "Zapisywanie..." : "Zapisz"}
             </button>
           </form>
           <AllergenSelectorModal
