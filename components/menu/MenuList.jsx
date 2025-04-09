@@ -4,12 +4,15 @@ import { useEffect, useState } from "react";
 import CategoryTabs from "./CategoryTabs";
 import MealCard from "./MealCard";
 import { getMealsWithDetails } from "@/actions/meals";
-import pad_thai from "@/public/pad_thai.jpg";
+// import pad_thai from "@/public/pad_thai.jpg";
 import AddMealSection from "./AddMealSection";
+import AddMealModal from "./AddMealModal";
 
 export default function MenuListWrapper() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [meals, setMeals] = useState([]);
+  const [selectedMeal, setSelectedMeal] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -34,13 +37,22 @@ export default function MenuListWrapper() {
           <MealCard
             key={meal.meal_id}
             title={meal.meal_name}
-            image={pad_thai} // TODO: replace with meal.image_url when real images are ready
+            image={meal.image_url} // TODO: replace with meal.image_url when real images are ready
             price={`${meal.price_value} ${meal.currency_symbol}`}
             ingredients={meal.ingredients?.join(", ")}
             allergens={meal.allergens?.join(", ")}
+            onClick={() => {
+              setSelectedMeal(meal);
+              setIsModalOpen(true);
+            }}
           />
         ))}
       </div>
+      <AddMealModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        initialData={selectedMeal}
+      />
     </>
   );
 }

@@ -27,6 +27,7 @@ export async function submitMeal(form) {
     meal_id,
     allergens = [],
     ingredients = [],
+    image_url,
   } = form;
 
   const {
@@ -51,6 +52,7 @@ export async function submitMeal(form) {
     currency_code,
     category_id,
     restaurant_id: restaurant.id,
+    image_url,
   };
 
   let meal;

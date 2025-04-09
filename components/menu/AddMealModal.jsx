@@ -6,6 +6,7 @@ import { X } from "lucide-react";
 import { getCurrencies } from "@/actions/currencies";
 import { getCategories } from "@/actions/categories";
 import { submitMeal } from "@/actions/meals";
+import { uploadMealImage } from "@/utils/uploadMealImage";
 import AllergenSelectorModal from "./AllergenSelectorModal";
 import IngredientSelectorModal from "./IngredientSelectorModal";
 
@@ -44,6 +45,16 @@ export default function AddMealModal({ isOpen, onClose }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    let imageUrl = null; // Initialize imageUrl
+    if (form.image) {
+      try {
+        imageUrl = await uploadMealImage(form.image); // Upload image
+      } catch (err) {
+        console.error(err);
+        alert("Błąd przy przesyłaniu zdjęcia");
+        return;
+      }
+    }
     await submitMeal({
       name: form.name,
       price_value: form.price,
@@ -51,6 +62,7 @@ export default function AddMealModal({ isOpen, onClose }) {
       category_id: form.category,
       ingredients: selectedIngredients,
       allergens: selectedAllergens,
+      image_url: imageUrl,
     });
 
     onClose();
@@ -158,8 +170,15 @@ export default function AddMealModal({ isOpen, onClose }) {
             <input
               type="file"
               name="image"
+              accept="image/*" // Add accept attribute
+              multiple={false} // Add multiple attribute
               className="border p-2 rounded"
-              onChange={(e) => setForm({ ...form, image: e.target.files[0] })}
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                  setForm((prev) => ({ ...prev, image: file })); // Update image state
+                }
+              }}
             />
             <button
               type="submit"
