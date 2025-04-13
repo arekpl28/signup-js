@@ -31,7 +31,7 @@ export default function MenuListWrapper() {
         onSelect={setSelectedCategory}
       />
       <div className="w-full flex flex-wrap items-start justify-start gap-4 p-4">
-        <AddMealSection />
+        <AddMealSection currencies={currencies} categories={categories} />
         {filteredMeals.map((meal) => (
           <MealCard
             key={meal.meal_id}
@@ -90,6 +90,8 @@ export default function MenuListWrapper() {
           });
         }}
         meal={selectedMeal}
+        currencies={currencies}
+        categories={categories}
       />
     </>
   );

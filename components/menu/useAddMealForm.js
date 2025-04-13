@@ -7,7 +7,12 @@ import { submitMeal } from "@/actions/meals";
 import { uploadMealImage } from "@/utils/uploadMealImage";
 import { useQueryClient } from "@tanstack/react-query";
 
-export function useAddMealForm(onClose, initialMeal = null) {
+export function useAddMealForm(
+  onClose,
+  initialMeal = null,
+  passedCurrencies = [],
+  passedCategories = []
+) {
   const [form, setForm] = useState({
     name: "",
     price: "",
@@ -27,16 +32,9 @@ export function useAddMealForm(onClose, initialMeal = null) {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    async function fetchData() {
-      const [curRes, catRes] = await Promise.all([
-        getCurrencies(),
-        getCategories(),
-      ]);
-      setCurrencies(curRes);
-      setCategories(catRes);
-    }
-    fetchData();
-  }, []);
+    setCurrencies(passedCurrencies);
+    setCategories(passedCategories);
+  }, [passedCurrencies, passedCategories]);
 
   useEffect(() => {
     if (initialMeal) {

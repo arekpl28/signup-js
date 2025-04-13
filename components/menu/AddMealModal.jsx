@@ -7,7 +7,13 @@ import { useAddMealForm } from "./useAddMealForm";
 import AllergenSelectorModal from "./AllergenSelectorModal";
 import IngredientSelectorModal from "./IngredientSelectorModal";
 
-export default function AddMealModal({ isOpen, onClose, meal }) {
+export default function AddMealModal({
+  isOpen,
+  onClose,
+  meal,
+  currencies,
+  categories,
+}) {
   const {
     form,
     setForm,
@@ -17,14 +23,12 @@ export default function AddMealModal({ isOpen, onClose, meal }) {
     setSelectedAllergens,
     selectedIngredients,
     setSelectedIngredients,
-    currencies,
-    categories,
     isAllergenModalOpen,
     setIsAllergenModalOpen,
     isIngredientModalOpen,
     setIsIngredientModalOpen,
     isSubmitting, // <-- add this line
-  } = useAddMealForm(onClose, meal);
+  } = useAddMealForm(onClose, meal, currencies, categories);
 
   return (
     <Dialog open={isOpen} onClose={onClose} className="fixed z-50 inset-0">
