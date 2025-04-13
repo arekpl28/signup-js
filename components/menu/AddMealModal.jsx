@@ -7,7 +7,7 @@ import { useAddMealForm } from "./useAddMealForm";
 import AllergenSelectorModal from "./AllergenSelectorModal";
 import IngredientSelectorModal from "./IngredientSelectorModal";
 
-export default function AddMealModal({ isOpen, onClose }) {
+export default function AddMealModal({ isOpen, onClose, meal }) {
   const {
     form,
     setForm,
@@ -24,7 +24,7 @@ export default function AddMealModal({ isOpen, onClose }) {
     isIngredientModalOpen,
     setIsIngredientModalOpen,
     isSubmitting, // <-- add this line
-  } = useAddMealForm(onClose);
+  } = useAddMealForm(onClose, meal);
 
   return (
     <Dialog open={isOpen} onClose={onClose} className="fixed z-50 inset-0">
@@ -101,7 +101,7 @@ export default function AddMealModal({ isOpen, onClose }) {
               <div className="text-sm text-gray-700">
                 {selectedIngredients.length > 0 ? (
                   <ul className="list-disc list-inside text-black">
-                    {selectedIngredients.map((ingredient) => (
+                    {selectedIngredients.filter(Boolean).map((ingredient) => (
                       <li key={ingredient.id}>{ingredient.name}</li>
                     ))}
                   </ul>
@@ -122,7 +122,7 @@ export default function AddMealModal({ isOpen, onClose }) {
               <div className="text-sm text-gray-700">
                 {selectedAllergens.length > 0 ? (
                   <ul className="list-disc list-inside text-black">
-                    {selectedAllergens.map((allergen) => (
+                    {selectedAllergens.filter(Boolean).map((allergen) => (
                       <li key={allergen.id}>{allergen.name}</li>
                     ))}
                   </ul>
@@ -165,6 +165,9 @@ export default function AddMealModal({ isOpen, onClose }) {
             selected={selectedIngredients}
             onSave={setSelectedIngredients}
           />
+          <pre className="text-sm text-gray-600">
+            {JSON.stringify(form, null, 2)}
+          </pre>
         </DialogPanel>
       </div>
     </Dialog>

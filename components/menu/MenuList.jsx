@@ -39,10 +39,19 @@ export default function MenuListWrapper() {
             title={meal.meal_name}
             image={meal.image_url} // TODO: replace with meal.image_url when real images are ready
             price={`${meal.price_value} ${meal.currency_symbol}`}
-            ingredients={meal.ingredients?.join(", ")}
-            allergens={meal.allergens?.join(", ")}
+            ingredients={meal.ingredients?.map((i) => i.name).join(", ")}
+            allergens={meal.allergens?.map((a) => a.name).join(", ")}
             onClick={() => {
-              setSelectedMeal(meal);
+              setSelectedMeal({
+                meal_id: meal.meal_id,
+                name: meal.meal_name,
+                price: meal.price_value,
+                currency: meal.currency_code,
+                category: meal.category_id,
+                ingredients: meal.ingredients || [],
+                allergens: meal.allergens || [],
+                image_url: meal.image_url,
+              });
               setIsModalOpen(true);
             }}
           />
@@ -54,7 +63,7 @@ export default function MenuListWrapper() {
           setIsModalOpen(false);
           setSelectedMeal(null);
         }}
-        initialData={selectedMeal}
+        meal={selectedMeal}
       />
     </>
   );

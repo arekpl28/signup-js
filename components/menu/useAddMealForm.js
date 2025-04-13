@@ -6,7 +6,7 @@ import { getCategories } from "@/actions/categories";
 import { submitMeal } from "@/actions/meals";
 import { uploadMealImage } from "@/utils/uploadMealImage";
 
-export function useAddMealForm(onClose) {
+export function useAddMealForm(onClose, initialMeal = null) {
   const [form, setForm] = useState({
     name: "",
     price: "",
@@ -34,6 +34,22 @@ export function useAddMealForm(onClose) {
     }
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (initialMeal) {
+      setForm({
+        name: initialMeal.name || "",
+        price: initialMeal.price || "",
+        currency: initialMeal.currency || "",
+        category: initialMeal.category || "",
+        ingredients: initialMeal.ingredients,
+        allergens: initialMeal.allergens,
+        image: initialMeal.image_url || null,
+      });
+      setSelectedAllergens(initialMeal.allergens || []);
+      setSelectedIngredients(initialMeal.ingredients || []);
+    }
+  }, [initialMeal]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
