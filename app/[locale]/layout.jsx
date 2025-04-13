@@ -5,6 +5,7 @@ import i18nConfig from "@/i18nConfig";
 import { dir } from "i18next";
 import TranslationsProvider from "@/components/layout/TranslationsProvider";
 import initTranslations from "@/app/i18n";
+import ClientProviders from "@/components/layout/ClientProviders";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,16 +40,18 @@ export default async function RootLayout(props) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <TranslationsProvider
-          locale={locale}
-          namespaces={namespaces}
-          resources={resources}
-        >
-          <div className="mx-auto max-w-screen-lg h-screen flex flex-col">
-            <Navbar locale={locale} />
-            <div className="flex-grow">{children}</div>
-          </div>
-        </TranslationsProvider>
+        <ClientProviders>
+          <TranslationsProvider
+            locale={locale}
+            namespaces={namespaces}
+            resources={resources}
+          >
+            <div className="mx-auto max-w-screen-lg h-screen flex flex-col">
+              <Navbar locale={locale} />
+              <div className="flex-grow">{children}</div>
+            </div>
+          </TranslationsProvider>
+        </ClientProviders>
       </body>
     </html>
   );

@@ -35,7 +35,7 @@ export default function AddMealModal({ isOpen, onClose, meal }) {
             <DialogTitle className="text-xl font-bold">
               Dodaj posiłek
             </DialogTitle>
-            <button onClick={onClose}>
+            <button onClick={() => onClose(null)}>
               <X />
             </button>
           </div>
@@ -174,9 +174,9 @@ export default function AddMealModal({ isOpen, onClose, meal }) {
             selected={selectedIngredients}
             onSave={setSelectedIngredients}
           />
-          <pre className="text-sm text-gray-600">
+          {/* <pre className="text-sm text-gray-600">
             {JSON.stringify(form, null, 2)}
-          </pre>
+          </pre> */}
         </DialogPanel>
       </div>
     </Dialog>

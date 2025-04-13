@@ -5,6 +5,7 @@ import { getCurrencies } from "@/actions/currencies";
 import { getCategories } from "@/actions/categories";
 import { submitMeal } from "@/actions/meals";
 import { uploadMealImage } from "@/utils/uploadMealImage";
+import { useQueryClient } from "@tanstack/react-query";
 
 export function useAddMealForm(onClose, initialMeal = null) {
   const [form, setForm] = useState({
@@ -23,6 +24,7 @@ export function useAddMealForm(onClose, initialMeal = null) {
   const [currencies, setCurrencies] = useState([]);
   const [categories, setCategories] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     async function fetchData() {
@@ -91,7 +93,7 @@ export function useAddMealForm(onClose, initialMeal = null) {
       imageUrl = form.image;
     }
 
-    await submitMeal({
+    const result = await submitMeal({
       meal_id: form.meal_id,
       name: form.name,
       price_value: form.price,
@@ -102,8 +104,15 @@ export function useAddMealForm(onClose, initialMeal = null) {
       image_url: imageUrl,
     });
 
+    queryClient.invalidateQueries({ queryKey: ["meals"] });
+
     setIsSubmitting(false);
-    onClose();
+
+    if (result.status === "success") {
+      onClose(result.meal); // ← to pełny posiłek, już z meal_id, kategorią itd.
+    } else {
+      alert(result.message || "Wystąpił błąd przy zapisie");
+    }
   };
 
   return {

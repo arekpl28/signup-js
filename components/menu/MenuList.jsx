@@ -1,25 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import CategoryTabs from "./CategoryTabs";
 import MealCard from "./MealCard";
-import { getMealsWithDetails } from "@/actions/meals";
-// import pad_thai from "@/public/pad_thai.jpg";
+import { useMeals } from "@/utils/useMeals";
 import AddMealSection from "./AddMealSection";
 import AddMealModal from "./AddMealModal";
+import { useQueryClient } from "@tanstack/react-query";
+import { useCurrencies } from "@/utils/useCurrencies";
+import { useCategories } from "@/utils/useCategories";
 
 export default function MenuListWrapper() {
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [meals, setMeals] = useState([]);
   const [selectedMeal, setSelectedMeal] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    (async () => {
-      const data = await getMealsWithDetails();
-      setMeals(data);
-    })();
-  }, []);
+  const { data: meals = [], isLoading, error } = useMeals();
+  const { data: currencies = [] } = useCurrencies();
+  const { data: categories = [] } = useCategories();
 
   const filteredMeals = selectedCategory
     ? meals.filter((meal) => meal.category_name === selectedCategory)
@@ -37,7 +36,7 @@ export default function MenuListWrapper() {
           <MealCard
             key={meal.meal_id}
             title={meal.meal_name}
-            image={meal.image_url} // TODO: replace with meal.image_url when real images are ready
+            image={meal.image_url}
             price={`${meal.price_value} ${meal.currency_symbol}`}
             ingredients={meal.ingredients?.map((i) => i.name).join(", ")}
             allergens={meal.allergens?.map((a) => a.name).join(", ")}
@@ -48,10 +47,8 @@ export default function MenuListWrapper() {
                 price: meal.price_value,
                 currency: meal.currency_code,
                 category: meal.category_id,
-                ingredients: meal.ingredients?.length
-                  ? meal.ingredients
-                  : undefined,
-                allergens: meal.allergens?.length ? meal.allergens : undefined,
+                ingredients: meal.ingredients,
+                allergens: meal.allergens,
                 image_url: meal.image_url,
               });
               setIsModalOpen(true);
@@ -61,9 +58,36 @@ export default function MenuListWrapper() {
       </div>
       <AddMealModal
         isOpen={isModalOpen}
-        onClose={() => {
+        onClose={(updatedMeal) => {
           setIsModalOpen(false);
           setSelectedMeal(null);
+
+          if (!updatedMeal) return;
+          console.log("updatedMeal:", updatedMeal);
+          queryClient.setQueryData(["meals"], (prevMeals = []) => {
+            const index = prevMeals.findIndex(
+              (m) => m.meal_id === updatedMeal.meal_id
+            );
+            const updated = {
+              ...updatedMeal,
+              ingredients: updatedMeal.ingredients?.map((i) => i.name) || [],
+              allergens: updatedMeal.allergens?.map((a) => a.name) || [],
+              currency_symbol:
+                currencies.find((c) => c.code === updatedMeal.currency)
+                  ?.symbol || "",
+              category_name:
+                categories.find((c) => c.id === updatedMeal.category)?.name ||
+                "",
+            };
+
+            if (index !== -1) {
+              const copy = [...prevMeals];
+              copy[index] = { ...copy[index], ...updated };
+              return copy;
+            } else {
+              return [...prevMeals, updated];
+            }
+          });
         }}
         meal={selectedMeal}
       />

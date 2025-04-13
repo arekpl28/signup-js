@@ -104,5 +104,12 @@ export async function submitMeal(form) {
   }
 
   revalidatePath("/");
-  return { status: "success", meal_id: meal.id };
+  const { data: fullMeal } = await supabase
+    .rpc("get_meals_with_details_by_id", { meal_id: meal.id }) // zakładamy że masz taką funkcję RPC
+    .single();
+
+  return {
+    status: "success",
+    meal: fullMeal,
+  };
 }
