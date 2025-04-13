@@ -31,6 +31,10 @@ export default function IngredientSelectorModal({
     }
   }, [isOpen]);
 
+  useEffect(() => {
+    setSelectedIngredients(selected || []);
+  }, [selected]);
+
   const toggleIngredient = (ingredient) => {
     setSelectedIngredients((prev) => {
       const exists = prev.find((i) => i.id === ingredient.id);

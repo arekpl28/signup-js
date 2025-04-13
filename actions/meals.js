@@ -81,8 +81,9 @@ export async function submitMeal(form) {
     };
   }
 
-  if (allergens.length) {
-    await supabase.from("meal_allergens").delete().eq("meal_id", meal.id);
+  // Always delete old allergens
+  await supabase.from("meal_allergens").delete().eq("meal_id", meal.id);
+  if (allergens.length > 0) {
     await supabase.from("meal_allergens").insert(
       allergens.map((a) => ({
         meal_id: meal.id,
@@ -91,8 +92,9 @@ export async function submitMeal(form) {
     );
   }
 
-  if (ingredients.length) {
-    await supabase.from("meal_ingredients").delete().eq("meal_id", meal.id);
+  // Always delete old ingredients
+  await supabase.from("meal_ingredients").delete().eq("meal_id", meal.id);
+  if (ingredients.length > 0) {
     await supabase.from("meal_ingredients").insert(
       ingredients.map((i) => ({
         meal_id: meal.id,
@@ -102,5 +104,5 @@ export async function submitMeal(form) {
   }
 
   revalidatePath("/");
-  return { status: "success" };
+  return { status: "success", meal_id: meal.id };
 }

@@ -48,8 +48,10 @@ export default function MenuListWrapper() {
                 price: meal.price_value,
                 currency: meal.currency_code,
                 category: meal.category_id,
-                ingredients: meal.ingredients || [],
-                allergens: meal.allergens || [],
+                ingredients: meal.ingredients?.length
+                  ? meal.ingredients
+                  : undefined,
+                allergens: meal.allergens?.length ? meal.allergens : undefined,
                 image_url: meal.image_url,
               });
               setIsModalOpen(true);

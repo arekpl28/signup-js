@@ -14,6 +14,7 @@ export function useAddMealForm(onClose, initialMeal = null) {
     category: "",
     ingredients: "",
     image: null,
+    meal_id: "",
   });
   const [isAllergenModalOpen, setIsAllergenModalOpen] = useState(false);
   const [selectedAllergens, setSelectedAllergens] = useState([]);
@@ -37,19 +38,36 @@ export function useAddMealForm(onClose, initialMeal = null) {
 
   useEffect(() => {
     if (initialMeal) {
+      const validIngredients = (initialMeal.ingredients || []).filter(
+        (i) => i?.id && i?.name
+      );
+      const validAllergens = (initialMeal.allergens || []).filter(
+        (a) => a?.id && a?.name
+      );
+
       setForm({
         name: initialMeal.name || "",
         price: initialMeal.price || "",
         currency: initialMeal.currency || "",
         category: initialMeal.category || "",
-        ingredients: initialMeal.ingredients,
-        allergens: initialMeal.allergens,
+        ingredients: validIngredients,
+        allergens: validAllergens,
         image: initialMeal.image_url || null,
+        meal_id: initialMeal.meal_id || "",
       });
-      setSelectedAllergens(initialMeal.allergens || []);
-      setSelectedIngredients(initialMeal.ingredients || []);
+
+      setSelectedAllergens(validAllergens);
+      setSelectedIngredients(validIngredients);
     }
   }, [initialMeal]);
+
+  useEffect(() => {
+    setForm((prev) => ({ ...prev, ingredients: selectedIngredients }));
+  }, [selectedIngredients]);
+
+  useEffect(() => {
+    setForm((prev) => ({ ...prev, allergens: selectedAllergens }));
+  }, [selectedAllergens]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -72,6 +90,7 @@ export function useAddMealForm(onClose, initialMeal = null) {
     }
 
     await submitMeal({
+      meal_id: form.meal_id,
       name: form.name,
       price_value: form.price,
       currency_code: form.currency,
