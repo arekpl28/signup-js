@@ -78,7 +78,7 @@ export function useAddMealForm(onClose, initialMeal = null) {
     e.preventDefault();
     setIsSubmitting(true);
     let imageUrl = null;
-    if (form.image) {
+    if (form.image instanceof File) {
       try {
         imageUrl = await uploadMealImage(form.image);
       } catch (err) {
@@ -87,6 +87,8 @@ export function useAddMealForm(onClose, initialMeal = null) {
         setIsSubmitting(false);
         return;
       }
+    } else if (typeof form.image === "string") {
+      imageUrl = form.image;
     }
 
     await submitMeal({

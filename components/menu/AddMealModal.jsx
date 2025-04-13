@@ -131,6 +131,15 @@ export default function AddMealModal({ isOpen, onClose, meal }) {
                 )}
               </div>
             </div>
+            {typeof form.image === "string" && (
+              <div className="mb-2">
+                <img
+                  src={form.image}
+                  alt="Podgląd zdjęcia"
+                  className="max-h-40 rounded border"
+                />
+              </div>
+            )}
             <input
               type="file"
               name="image"
