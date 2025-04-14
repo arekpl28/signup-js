@@ -27,3 +27,22 @@ export async function uploadMealImage(file) {
 
   return publicUrl;
 }
+
+export async function deleteMealImage(imageUrl) {
+  const supabase = createClient();
+
+  // Wyciągamy ścieżkę z publicznego URL-a
+  const url = new URL(imageUrl);
+  const path = decodeURIComponent(
+    url.pathname.replace("/storage/v1/object/public/meal-images/", "")
+  );
+
+  const { error } = await supabase.storage.from("meal-images").remove([path]);
+
+  if (error) {
+    console.error("Delete image error:", error);
+    return false;
+  }
+
+  return true;
+}

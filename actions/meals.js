@@ -2,6 +2,7 @@
 
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
+import { deleteMealImageServer } from "@/utils/deleteMealImageServer";
 
 export async function getMealsWithDetails() {
   const supabase = await createClient();
@@ -112,4 +113,27 @@ export async function submitMeal(form) {
     status: "success",
     meal: fullMeal,
   };
+}
+
+export async function deleteMeal(meal_id, image_url = null) {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { status: "error", message: "Not authenticated" };
+
+  // 🔽 usuń obrazek jeśli jest
+  if (image_url && typeof image_url === "string") {
+    await deleteMealImageServer(image_url);
+  }
+
+  const { error } = await supabase.from("meals").delete().eq("id", meal_id);
+
+  if (error) {
+    return { status: "error", message: error.message };
+  }
+
+  revalidatePath("/");
+  return { status: "success" };
 }

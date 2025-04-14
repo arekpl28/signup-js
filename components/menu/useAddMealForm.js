@@ -6,6 +6,7 @@ import { getCategories } from "@/actions/categories";
 import { submitMeal } from "@/actions/meals";
 import { uploadMealImage } from "@/utils/uploadMealImage";
 import { useQueryClient } from "@tanstack/react-query";
+import { deleteMeal } from "@/actions/meals";
 
 export function useAddMealForm(
   onClose,
@@ -113,11 +114,30 @@ export function useAddMealForm(
     }
   };
 
+  const handleDelete = async () => {
+    if (!form.meal_id) return;
+
+    const confirmDelete = confirm("Czy na pewno chcesz usunąć ten posiłek?");
+    if (!confirmDelete) return;
+
+    setIsSubmitting(true);
+    const result = await deleteMeal(form.meal_id, form.image);
+
+    if (result.status === "success") {
+      queryClient.invalidateQueries({ queryKey: ["meals"] });
+      onClose(null); // zamknij modal
+    } else {
+      alert(result.message || "Wystąpił błąd przy usuwaniu");
+    }
+    setIsSubmitting(false);
+  };
+
   return {
     form,
     setForm,
     handleChange,
     handleSubmit,
+    handleDelete,
     isAllergenModalOpen,
     setIsAllergenModalOpen,
     selectedAllergens,

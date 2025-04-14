@@ -19,6 +19,7 @@ export default function AddMealModal({
     setForm,
     handleChange,
     handleSubmit,
+    handleDelete,
     selectedAllergens,
     setSelectedAllergens,
     selectedIngredients,
@@ -158,13 +159,27 @@ export default function AddMealModal({
               }}
               disabled={isSubmitting}
             />
-            <button
-              type="submit"
-              className="bg-black text-white py-2 rounded hover:opacity-90 disabled:opacity-50"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? "Zapisywanie..." : "Zapisz"}
-            </button>
+            <div className="flex gap-2">
+              {meal && (
+                <button
+                  type="button"
+                  className="flex-1 bg-red-600 text-white py-2 rounded hover:opacity-90 disabled:opacity-50"
+                  onClick={handleDelete}
+                  disabled={isSubmitting}
+                >
+                  Usuń
+                </button>
+              )}
+              <button
+                type="submit"
+                className={`${
+                  meal ? "flex-1" : "w-full"
+                } bg-black text-white py-2 rounded hover:opacity-90 disabled:opacity-50`}
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Zapisywanie..." : "Zapisz"}
+              </button>
+            </div>
           </form>
           <AllergenSelectorModal
             isOpen={isAllergenModalOpen}
