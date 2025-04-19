@@ -15,9 +15,11 @@ const Navbar = async ({ locale }) => {
   return (
     <nav className="border-b bg-background w-full flex items-center">
       <div className="flex w-full items-center justify-between my-4">
-        <Link className="font-bold" href="/">
-          Menu
-        </Link>
+        {user && (
+          <Link className="font-bold" href="/menu">
+            Menu
+          </Link>
+        )}
 
         <div className="flex items-center gap-x-5">
           {user && <Link href="/contact">Restaurant</Link>}
