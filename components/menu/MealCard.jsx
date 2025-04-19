@@ -1,6 +1,7 @@
 import Image from "next/image";
 import glutenFreeIcon from "@/public/gluten3.png";
 import chiliIcon from "@/public/chili2.png";
+import { useState } from "react";
 
 export default function MealCard({
   title,
@@ -33,12 +34,12 @@ export default function MealCard({
       )}
       <div className="text-center font-bold text-black">{price}</div>
       <div className="p-3">
-        <div className="text-sm text-gray-500 mb-1">
+        <p className="line-clamp-2 text-sm text-green-500 mb-1">
           <strong>Składniki:</strong> {ingredients}
-        </div>
-        <div className="text-xs text-red-500 mb-2">
+        </p>
+        <p className="line-clamp-2 text-sm text-red-500 mb-1">
           <strong>Alergeny:</strong> {allergens}
-        </div>
+        </p>
         <div className="flex -ml-2 items-center justify-between">
           <div className="flex items-center ">
             {Array.from({ length: spiciness || 0 }).map((_, i) => (
@@ -62,13 +63,6 @@ export default function MealCard({
             />
           )}
         </div>
-        {/* <div
-          className={`text-xs font-medium ${
-            glutenFree ? "text-green-600" : "text-gray-500"
-          }`}
-        >
-          {glutenFree ? "Bez glutenu" : "Zawiera gluten"}
-        </div> */}
       </div>
     </div>
   );
