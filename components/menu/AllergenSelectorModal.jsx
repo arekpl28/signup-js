@@ -47,13 +47,16 @@ export default function AllergenSelectorModal({
     <Dialog open={isOpen} onClose={onClose} className="fixed z-50 inset-0">
       <div className="fixed inset-0 bg-black/30" onClick={onClose} />
       <div className="fixed inset-0 flex items-center justify-center">
-        <DialogPanel className="bg-white rounded-xl p-6 w-[90%] max-w-lg">
+        <DialogPanel className="bg-white rounded-xl p-6 w-[90%] max-w-lg text-black">
           <DialogTitle className="text-xl font-bold mb-4">
             Wybierz alergeny
           </DialogTitle>
-          <div className="flex flex-col gap-2 max-h-64 overflow-y-auto">
+          <div className="flex flex-wrap gap-2 max-h-64 overflow-y-auto text-black">
             {allergens.map((allergen) => (
-              <label key={allergen.id} className="flex items-center gap-2">
+              <label
+                key={allergen.id}
+                className="inline-flex items-center gap-2 p-2 border rounded-md cursor-pointer hover:bg-gray-100"
+              >
                 <input
                   type="checkbox"
                   checked={selectedAllergens.some((a) => a.id === allergen.id)}

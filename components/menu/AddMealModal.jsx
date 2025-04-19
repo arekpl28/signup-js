@@ -144,13 +144,14 @@ export default function AddMealModal({
               >
                 Wybierz składniki
               </button>
-              <div className="text-sm text-gray-700">
+              <div className="text-sm text-gray-700 text-black">
                 {selectedIngredients.length > 0 ? (
-                  <ul className="list-disc list-inside text-black">
-                    {selectedIngredients.filter(Boolean).map((ingredient) => (
-                      <li key={ingredient.id}>{ingredient.name}</li>
-                    ))}
-                  </ul>
+                  <span>
+                    {selectedIngredients
+                      .filter(Boolean)
+                      .map((ingredient) => ingredient.name)
+                      .join(", ")}
+                  </span>
                 ) : (
                   <span>Brak wybranych składników.</span>
                 )}
@@ -165,13 +166,14 @@ export default function AddMealModal({
               >
                 Wybierz alergeny
               </button>
-              <div className="text-sm text-gray-700">
+              <div className="text-sm text-gray-700 text-black">
                 {selectedAllergens.length > 0 ? (
-                  <ul className="list-disc list-inside text-black">
-                    {selectedAllergens.filter(Boolean).map((allergen) => (
-                      <li key={allergen.id}>{allergen.name}</li>
-                    ))}
-                  </ul>
+                  <span>
+                    {selectedAllergens
+                      .filter(Boolean)
+                      .map((allergen) => allergen.name)
+                      .join(", ")}
+                  </span>
                 ) : (
                   <span>Brak wybranych alergenów.</span>
                 )}
