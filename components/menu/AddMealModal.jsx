@@ -94,6 +94,24 @@ export default function AddMealModal({
                 </option>
               ))}
             </select>
+            <div className="flex items-center gap-2">
+              <label htmlFor="gluten_free" className="text-sm text-black">
+                Bezglutenowy (gluten free){"  "}
+                <input
+                  type="checkbox"
+                  id="gluten_free"
+                  name="gluten_free"
+                  checked={form.gluten_free}
+                  onChange={(e) =>
+                    setForm((prev) => ({
+                      ...prev,
+                      gluten_free: e.target.checked,
+                    }))
+                  }
+                  disabled={isSubmitting}
+                />
+              </label>
+            </div>
             <div>
               <button
                 type="button"

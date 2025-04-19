@@ -1,8 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getCurrencies } from "@/actions/currencies";
-import { getCategories } from "@/actions/categories";
 import { submitMeal } from "@/actions/meals";
 import { uploadMealImage } from "@/utils/uploadMealImage";
 import { useQueryClient } from "@tanstack/react-query";
@@ -22,6 +20,7 @@ export function useAddMealForm(
     ingredients: "",
     image: null,
     meal_id: "",
+    gluten_free: false,
   });
   const [isAllergenModalOpen, setIsAllergenModalOpen] = useState(false);
   const [selectedAllergens, setSelectedAllergens] = useState([]);
@@ -45,7 +44,7 @@ export function useAddMealForm(
       const validAllergens = (initialMeal.allergens || []).filter(
         (a) => a?.id && a?.name
       );
-
+      console.log(initialMeal);
       setForm({
         name: initialMeal.name || "",
         price: initialMeal.price || "",
@@ -55,6 +54,7 @@ export function useAddMealForm(
         allergens: validAllergens,
         image: initialMeal.image_url || null,
         meal_id: initialMeal.meal_id || "",
+        gluten_free: initialMeal.gluten_free === true,
       });
 
       setSelectedAllergens(validAllergens);
@@ -101,6 +101,7 @@ export function useAddMealForm(
       ingredients: selectedIngredients,
       allergens: selectedAllergens,
       image_url: imageUrl,
+      gluten_free: form.gluten_free,
     });
 
     queryClient.invalidateQueries({ queryKey: ["meals"] });
