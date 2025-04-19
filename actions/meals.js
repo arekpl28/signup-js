@@ -64,6 +64,18 @@ export async function submitMeal(form) {
   let error;
 
   if (meal_id) {
+    // 🔽 sprawdź stare image_url
+    const { data: oldMeal } = await supabase
+      .from("meals")
+      .select("image_url")
+      .eq("id", meal_id)
+      .single();
+
+    // 🔽 usuń stare zdjęcie jeśli zostało nadpisane
+    if (oldMeal?.image_url && oldMeal.image_url !== image_url) {
+      await deleteMealImageServer(oldMeal.image_url);
+    }
+
     ({ error } = await supabase
       .from("meals")
       .update(payload)

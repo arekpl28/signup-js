@@ -234,9 +234,9 @@ export default function AddMealModal({
             selected={selectedIngredients}
             onSave={setSelectedIngredients}
           />
-          <pre className="text-sm text-gray-600">
+          {/* <pre className="text-sm text-gray-600">
             {JSON.stringify(form, null, 2)}
-          </pre>
+          </pre> */}
         </DialogPanel>
       </div>
     </Dialog>
