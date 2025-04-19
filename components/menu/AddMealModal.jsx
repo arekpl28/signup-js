@@ -144,7 +144,7 @@ export default function AddMealModal({
               >
                 Wybierz składniki
               </button>
-              <div className="text-sm text-gray-700 text-black">
+              <div className="text-sm text-gray-700">
                 {selectedIngredients.length > 0 ? (
                   <span>
                     {selectedIngredients
@@ -166,7 +166,7 @@ export default function AddMealModal({
               >
                 Wybierz alergeny
               </button>
-              <div className="text-sm text-gray-700 text-black">
+              <div className="text-sm text-gray-700 ">
                 {selectedAllergens.length > 0 ? (
                   <span>
                     {selectedAllergens
