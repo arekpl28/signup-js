@@ -88,3 +88,20 @@ export async function getAllActiveRestaurants() {
 
   return data;
 }
+
+export async function getRestaurantById(id) {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("restaurants")
+    .select("id, name, address, description, phone, opening_hours")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    console.error("Błąd przy pobieraniu restauracji:", error.message);
+    return null;
+  }
+
+  return data;
+}

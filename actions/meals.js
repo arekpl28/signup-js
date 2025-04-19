@@ -153,3 +153,21 @@ export async function deleteMeal(meal_id, image_url = null) {
   revalidatePath("/");
   return { status: "success" };
 }
+
+export async function getMealsForRestaurant(restaurantId) {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.rpc(
+    "get_meals_with_details_by_restaurant",
+    {
+      restaurant_id: restaurantId,
+    }
+  );
+
+  if (error) {
+    console.error("Error fetching meals:", error.message);
+    return [];
+  }
+
+  return data;
+}

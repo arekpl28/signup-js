@@ -1,27 +1,13 @@
-import { createClient } from "@/utils/supabase/server";
+import { getMealsForRestaurant } from "@/actions/meals";
+import { getRestaurantById } from "@/actions/restaurantServer";
 import MealCard from "@/components/menu/MealCard";
 
 export default async function RestaurantMenu(props) {
-  const supabase = await createClient();
   const { id } = await getParams(props);
+  const restaurant = await getRestaurantById(id);
+  const meals = await getMealsForRestaurant(id);
 
-  const { data: restaurant } = await supabase
-    .from("restaurants")
-    .select("name")
-    .eq("id", id)
-    .single();
-
-  const { data: meals, error } = await supabase
-    .from("meals")
-    .select(
-      "id, name, image_url, price_value, currency_code, gluten_free, spiciness"
-    )
-    .eq("restaurant_id", id)
-    .eq("is_active", true);
-
-  console.log("restaurant_id:", id);
-  console.log("meals:", meals);
-  if (error) console.error("Supabase error:", error.message);
+  console.log(meals);
 
   return (
     <div className="p-6">
@@ -38,8 +24,16 @@ export default async function RestaurantMenu(props) {
             title={meal.name}
             image={meal.image_url}
             price={`${meal.price_value ?? "?"} ${meal.currency_code ?? ""}`}
-            ingredients={meal.ingredients?.map((i) => i.name).join(", ") ?? ""}
-            allergens={meal.allergens?.map((a) => a.name).join(", ") ?? ""}
+            ingredients={
+              Array.isArray(meal.ingredients)
+                ? meal.ingredients.map((i) => i.name).join(", ")
+                : ""
+            }
+            allergens={
+              Array.isArray(meal.allergens)
+                ? meal.allergens.map((a) => a.name).join(", ")
+                : ""
+            }
             glutenFree={meal.gluten_free}
             spiciness={meal.spiciness}
           />
