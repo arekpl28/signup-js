@@ -112,6 +112,29 @@ export default function AddMealModal({
                 />
               </label>
             </div>
+            <div className="flex items-center gap-2">
+              <label htmlFor="spiciness" className="text-sm text-black">
+                Ostrość:
+              </label>
+              <select
+                id="spiciness"
+                name="spiciness"
+                value={form.spiciness}
+                onChange={(e) =>
+                  setForm((prev) => ({
+                    ...prev,
+                    spiciness: parseInt(e.target.value),
+                  }))
+                }
+                disabled={isSubmitting}
+                className="border p-2 rounded"
+              >
+                <option value={0}>Brak</option>
+                <option value={1}>Łagodny 🌶️</option>
+                <option value={2}>Ostry 🌶️🌶️</option>
+                <option value={3}>Bardzo ostry 🌶️🌶️🌶️</option>
+              </select>
+            </div>
             <div>
               <button
                 type="button"
@@ -211,9 +234,9 @@ export default function AddMealModal({
             selected={selectedIngredients}
             onSave={setSelectedIngredients}
           />
-          {/* <pre className="text-sm text-gray-600">
+          <pre className="text-sm text-gray-600">
             {JSON.stringify(form, null, 2)}
-          </pre> */}
+          </pre>
         </DialogPanel>
       </div>
     </Dialog>

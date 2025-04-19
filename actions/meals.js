@@ -30,6 +30,7 @@ export async function submitMeal(form) {
     ingredients = [],
     image_url,
     gluten_free,
+    spiciness,
   } = form;
 
   const {
@@ -56,6 +57,7 @@ export async function submitMeal(form) {
     restaurant_id: restaurant.id,
     image_url,
     gluten_free,
+    spiciness,
   };
 
   let meal;

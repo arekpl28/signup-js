@@ -1,5 +1,6 @@
 import Image from "next/image";
 import glutenFreeIcon from "@/public/gluten3.png";
+import chiliIcon from "@/public/chili2.png";
 
 export default function MealCard({
   title,
@@ -8,6 +9,7 @@ export default function MealCard({
   ingredients,
   allergens,
   glutenFree,
+  spiciness,
   onClick,
 }) {
   return (
@@ -15,20 +17,9 @@ export default function MealCard({
       className="w-60 h-auto border rounded-lg shadow bg-white overflow-hidden cursor-pointer hover:shadow-lg transition"
       onClick={onClick}
     >
-      <div className="flex items-center gap-2 mt-2 px-2">
-        <div className="w-6 h-6" /> {/* Pusta przestrzeń – np. na przyszłość */}
+      <div className="flex items-center gap-2 mt-1 ">
         <div className="flex-1 text-center">
           <h3 className="text-lg text-black font-semibold">{title}</h3>
-        </div>
-        <div className="w-6 h-6 flex items-center justify-center">
-          {glutenFree && (
-            <Image
-              src={glutenFreeIcon} // podmień na swoją ścieżkę
-              alt="Gluten free"
-              width={30}
-              height={30}
-            />
-          )}
         </div>
       </div>
       {image ? (
@@ -51,6 +42,29 @@ export default function MealCard({
         </div>
         <div className="text-xs text-red-500 mb-2">
           <strong>Alergeny:</strong> {allergens}
+        </div>
+        <div className="flex -ml-2 items-center justify-between">
+          <div className="flex items-center ">
+            {Array.from({ length: spiciness || 0 }).map((_, i) => (
+              <Image
+                key={i}
+                src={chiliIcon}
+                alt="Spicy"
+                width={24}
+                height={24}
+                className={i > 0 ? "-ml-3" : ""}
+              />
+            ))}
+          </div>
+
+          {glutenFree && (
+            <Image
+              src={glutenFreeIcon}
+              alt="Gluten free"
+              width={24}
+              height={24}
+            />
+          )}
         </div>
         {/* <div
           className={`text-xs font-medium ${

@@ -21,6 +21,7 @@ export function useAddMealForm(
     image: null,
     meal_id: "",
     gluten_free: false,
+    spiciness: 0,
   });
   const [isAllergenModalOpen, setIsAllergenModalOpen] = useState(false);
   const [selectedAllergens, setSelectedAllergens] = useState([]);
@@ -55,6 +56,7 @@ export function useAddMealForm(
         image: initialMeal.image_url || null,
         meal_id: initialMeal.meal_id || "",
         gluten_free: initialMeal.gluten_free === true,
+        spiciness: initialMeal.spiciness || 0,
       });
 
       setSelectedAllergens(validAllergens);
@@ -102,6 +104,7 @@ export function useAddMealForm(
       allergens: selectedAllergens,
       image_url: imageUrl,
       gluten_free: form.gluten_free,
+      spiciness: form.spiciness,
     });
 
     queryClient.invalidateQueries({ queryKey: ["meals"] });

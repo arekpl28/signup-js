@@ -41,6 +41,7 @@ export default function MenuListWrapper() {
             ingredients={meal.ingredients?.map((i) => i.name).join(", ")}
             allergens={meal.allergens?.map((a) => a.name).join(", ")}
             glutenFree={meal.gluten_free}
+            spiciness={meal.spiciness}
             onClick={() => {
               setSelectedMeal({
                 meal_id: meal.meal_id,
@@ -52,6 +53,7 @@ export default function MenuListWrapper() {
                 allergens: meal.allergens,
                 image_url: meal.image_url,
                 gluten_free: meal.gluten_free,
+                spiciness: meal.spiciness,
               });
               setIsModalOpen(true);
             }}
