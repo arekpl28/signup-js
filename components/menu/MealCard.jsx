@@ -23,13 +23,9 @@ export default function MealCard({
         </div>
       </div>
       {image ? (
-        <Image
-          src={image}
-          alt={title}
-          width={240}
-          height={140}
-          className="w-full object-cover"
-        />
+        <div className="aspect-square w-full overflow-hidden relative">
+          <Image src={image} alt={title} fill className="object-cover" />
+        </div>
       ) : (
         <div className="w-full h-[140px] bg-gray-100 flex items-center justify-center text-gray-400">
           Brak zdjęcia
