@@ -20,7 +20,7 @@ const Navbar = async ({ locale }) => {
         </Link>
 
         <div className="flex items-center gap-x-5">
-          {user && <Link href="/restaurant">Restaurant</Link>}
+          {user && <Link href="/contact">Restaurant</Link>}
         </div>
         <div className="flex items-center gap-x-5">
           {!user ? (
