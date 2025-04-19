@@ -73,3 +73,18 @@ export async function getRestaurantForCurrentUser() {
 
   return data;
 }
+
+export async function getAllActiveRestaurants() {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("restaurants")
+    .select("id, name, address, description")
+    .eq("is_active", true);
+
+  if (error) {
+    console.error("Błąd przy pobieraniu restauracji:", error.message);
+    return [];
+  }
+
+  return data;
+}
