@@ -1,7 +1,6 @@
 import Image from "next/image";
 import glutenFreeIcon from "@/public/gluten3.png";
 import chiliIcon from "@/public/chili2.png";
-import { useState } from "react";
 
 export default function MealCard({
   title,
