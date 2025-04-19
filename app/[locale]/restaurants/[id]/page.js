@@ -2,12 +2,10 @@ import { getMealsForRestaurant } from "@/actions/meals";
 import { getRestaurantById } from "@/actions/restaurantServer";
 import MealCard from "@/components/menu/MealCard";
 
-export default async function RestaurantMenu(props) {
-  const { id } = await getParams(props);
+export default async function RestaurantMenu({ params }) {
+  const id = (await params).id;
   const restaurant = await getRestaurantById(id);
   const meals = await getMealsForRestaurant(id);
-
-  console.log(meals);
 
   return (
     <div className="p-6">
@@ -24,16 +22,8 @@ export default async function RestaurantMenu(props) {
             title={meal.name}
             image={meal.image_url}
             price={`${meal.price_value ?? "?"} ${meal.currency_code ?? ""}`}
-            ingredients={
-              Array.isArray(meal.ingredients)
-                ? meal.ingredients.map((i) => i.name).join(", ")
-                : ""
-            }
-            allergens={
-              Array.isArray(meal.allergens)
-                ? meal.allergens.map((a) => a.name).join(", ")
-                : ""
-            }
+            ingredients={meal.ingredients?.map((i) => i.name).join(", ")}
+            allergens={meal.allergens?.map((a) => a.name).join(", ")}
             glutenFree={meal.gluten_free}
             spiciness={meal.spiciness}
           />
@@ -41,8 +31,4 @@ export default async function RestaurantMenu(props) {
       </div>
     </div>
   );
-}
-
-async function getParams(props) {
-  return props.params;
 }
