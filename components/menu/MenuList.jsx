@@ -20,6 +20,10 @@ export default function MenuListWrapper() {
   const { data: currencies = [] } = useCurrencies();
   const { data: categories = [] } = useCategories();
 
+  const categoriesInMeals = [
+    ...new Set(meals.map((meal) => meal.category_name).filter(Boolean)),
+  ];
+
   const filteredMeals = selectedCategory
     ? meals.filter((meal) => meal.category_name === selectedCategory)
     : meals;
@@ -27,6 +31,7 @@ export default function MenuListWrapper() {
   return (
     <>
       <CategoryTabs
+        categories={categoriesInMeals}
         selected={selectedCategory}
         onSelect={setSelectedCategory}
       />
