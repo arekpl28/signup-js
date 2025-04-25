@@ -1,19 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
 import { Dialog, DialogTitle, DialogPanel } from "@headlessui/react";
 import { X } from "lucide-react";
 import { useAddMealForm } from "./useAddMealForm";
 import AllergenSelectorModal from "./AllergenSelectorModal";
 import IngredientSelectorModal from "./IngredientSelectorModal";
 
-export default function AddMealModal({
-  isOpen,
-  onClose,
-  meal,
-  currencies,
-  categories,
-}) {
+export default function AddMealModal({ isOpen, onClose, meal, categories }) {
   const {
     form,
     setForm,
@@ -29,7 +22,7 @@ export default function AddMealModal({
     isIngredientModalOpen,
     setIsIngredientModalOpen,
     isSubmitting, // <-- add this line
-  } = useAddMealForm(onClose, meal, currencies, categories);
+  } = useAddMealForm(onClose, meal, categories);
 
   return (
     <Dialog open={isOpen} onClose={onClose} className="fixed z-50 inset-0">
@@ -66,20 +59,7 @@ export default function AddMealModal({
               required
               disabled={isSubmitting}
             />
-            <select
-              name="currency"
-              value={form.currency}
-              onChange={handleChange}
-              className="border p-2 rounded"
-              disabled={isSubmitting}
-            >
-              <option value="">Wybierz walutę</option>
-              {currencies.map((cur) => (
-                <option key={cur.code} value={cur.code}>
-                  {cur.name} ({cur.symbol})
-                </option>
-              ))}
-            </select>
+
             <select
               name="category"
               className="border p-2 rounded"

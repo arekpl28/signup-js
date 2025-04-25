@@ -32,7 +32,7 @@ export default function MealModal({ isOpen, onClose, meal }) {
           )}
           {/* CENA */}
           <div className="mb-4 text-xl font-semibold text-center">
-            {meal.price_value} {meal.currency_code}
+            {meal.price_value}
           </div>
           {/* KATEGORIA */}
           <div className="mb-2">

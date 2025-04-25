@@ -23,7 +23,6 @@ export async function submitMeal(form) {
   const {
     name,
     price_value,
-    currency_code,
     category_id,
     meal_id,
     allergens = [],
@@ -52,7 +51,6 @@ export async function submitMeal(form) {
   const payload = {
     name,
     price_value,
-    currency_code,
     category_id,
     restaurant_id: restaurant.id,
     image_url,

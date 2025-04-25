@@ -9,13 +9,11 @@ import { deleteMeal } from "@/actions/meals";
 export function useAddMealForm(
   onClose,
   initialMeal = null,
-  passedCurrencies = [],
   passedCategories = []
 ) {
   const [form, setForm] = useState({
     name: "",
     price: "",
-    currency: "$",
     category: "",
     ingredients: "",
     image: null,
@@ -27,15 +25,13 @@ export function useAddMealForm(
   const [selectedAllergens, setSelectedAllergens] = useState([]);
   const [isIngredientModalOpen, setIsIngredientModalOpen] = useState(false);
   const [selectedIngredients, setSelectedIngredients] = useState([]);
-  const [currencies, setCurrencies] = useState([]);
   const [categories, setCategories] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    setCurrencies(passedCurrencies);
     setCategories(passedCategories);
-  }, [passedCurrencies, passedCategories]);
+  }, [passedCategories]);
 
   useEffect(() => {
     if (initialMeal) {
@@ -49,7 +45,6 @@ export function useAddMealForm(
       setForm({
         name: initialMeal.name || "",
         price: initialMeal.price || "",
-        currency: initialMeal.currency || "",
         category: initialMeal.category || "",
         ingredients: validIngredients,
         allergens: validAllergens,
@@ -98,7 +93,6 @@ export function useAddMealForm(
       meal_id: form.meal_id,
       name: form.name,
       price_value: form.price,
-      currency_code: form.currency,
       category_id: form.category,
       ingredients: selectedIngredients,
       allergens: selectedAllergens,
@@ -150,7 +144,6 @@ export function useAddMealForm(
     setIsIngredientModalOpen,
     selectedIngredients,
     setSelectedIngredients,
-    currencies,
     categories,
     isSubmitting,
   };

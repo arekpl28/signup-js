@@ -7,7 +7,6 @@ import { useMeals } from "@/utils/useMeals";
 import AddMealSection from "./AddMealSection";
 import AddMealModal from "./AddMealModal";
 import { useQueryClient } from "@tanstack/react-query";
-import { useCurrencies } from "@/utils/useCurrencies";
 import { useCategories } from "@/utils/useCategories";
 
 export default function MenuListWrapper() {
@@ -17,7 +16,6 @@ export default function MenuListWrapper() {
   const queryClient = useQueryClient();
 
   const { data: meals = [], isLoading, error } = useMeals();
-  const { data: currencies = [] } = useCurrencies();
   const { data: categories = [] } = useCategories();
 
   const categoriesInMeals = [
@@ -36,13 +34,13 @@ export default function MenuListWrapper() {
         onSelect={setSelectedCategory}
       />
       <div className="w-full flex flex-wrap items-start justify-start gap-4 p-4">
-        <AddMealSection currencies={currencies} categories={categories} />
+        <AddMealSection categories={categories} />
         {filteredMeals.map((meal) => (
           <MealCard
             key={meal.meal_id}
             title={meal.meal_name}
             image={meal.image_url}
-            price={`${meal.price_value} ${meal.currency_symbol}`}
+            price={`${meal.price_value}`}
             ingredients={meal.ingredients?.map((i) => i.name).join(", ")}
             allergens={meal.allergens?.map((a) => a.name).join(", ")}
             glutenFree={meal.gluten_free}
@@ -52,7 +50,6 @@ export default function MenuListWrapper() {
                 meal_id: meal.meal_id,
                 name: meal.meal_name,
                 price: meal.price_value,
-                currency: meal.currency_code,
                 category: meal.category_id,
                 ingredients: meal.ingredients,
                 allergens: meal.allergens,
@@ -81,9 +78,6 @@ export default function MenuListWrapper() {
               ...updatedMeal,
               ingredients: updatedMeal.ingredients?.map((i) => i.name) || [],
               allergens: updatedMeal.allergens?.map((a) => a.name) || [],
-              currency_symbol:
-                currencies.find((c) => c.code === updatedMeal.currency)
-                  ?.symbol || "",
               category_name:
                 categories.find((c) => c.id === updatedMeal.category)?.name ||
                 "",
@@ -99,7 +93,6 @@ export default function MenuListWrapper() {
           });
         }}
         meal={selectedMeal}
-        currencies={currencies}
         categories={categories}
       />
     </>

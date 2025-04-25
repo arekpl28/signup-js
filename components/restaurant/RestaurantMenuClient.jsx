@@ -37,7 +37,7 @@ export default function RestaurantMenuClient({ restaurant, meals }) {
             key={meal.id}
             title={meal.name}
             image={meal.image_url}
-            price={`${meal.price_value ?? "?"} ${meal.currency_code ?? ""}`}
+            price={`${meal.price_value ?? "?"} ${restaurant?.currency_symbol || ""}`}
             ingredients={meal.ingredients?.map((i) => i.name).join(", ")}
             allergens={meal.allergens?.map((a) => a.name).join(", ")}
             glutenFree={meal.gluten_free}

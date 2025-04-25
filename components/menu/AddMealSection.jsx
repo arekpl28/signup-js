@@ -4,7 +4,7 @@ import { useState } from "react";
 import AddMealButton from "./AddMealButton";
 import AddMealModal from "./AddMealModal";
 
-export default function AddMealSection({ currencies, categories }) {
+export default function AddMealSection({ categories }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formKey, setFormKey] = useState(Date.now());
 
@@ -20,7 +20,6 @@ export default function AddMealSection({ currencies, categories }) {
         key={formKey}
         isOpen={isModalOpen}
         onClose={handleClose}
-        currencies={currencies}
         categories={categories}
       />
     </>
