@@ -1,11 +1,10 @@
-import { getMealsForRestaurant } from "@/actions/meals";
-import { getRestaurantById } from "@/actions/restaurantServer";
+"use client";
+import { useState } from "react";
 import MealCard from "@/components/menu/MealCard";
+import MealModal from "@/components/restaurant/MealModal"; // musisz utworzyć!
 
-export default async function RestaurantMenu({ params }) {
-  const id = (await params).id;
-  const restaurant = await getRestaurantById(id);
-  const meals = await getMealsForRestaurant(id);
+export default function RestaurantMenuClient({ restaurant, meals }) {
+  const [selectedMeal, setSelectedMeal] = useState(null);
 
   return (
     <div className="p-6">
@@ -26,9 +25,19 @@ export default async function RestaurantMenu({ params }) {
             allergens={meal.allergens?.map((a) => a.name).join(", ")}
             glutenFree={meal.gluten_free}
             spiciness={meal.spiciness}
+            onClick={() => setSelectedMeal(meal)}
           />
         ))}
       </div>
+
+      {/* MODAL */}
+      {selectedMeal && (
+        <MealModal
+          isOpen={!!selectedMeal}
+          meal={selectedMeal}
+          onClose={() => setSelectedMeal(null)}
+        />
+      )}
     </div>
   );
 }
