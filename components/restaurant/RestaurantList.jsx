@@ -4,6 +4,7 @@ export default function RestaurantList({ restaurants }) {
   if (!restaurants?.length) {
     return <p>Brak aktywnych restauracji.</p>;
   }
+  console.log(restaurants);
 
   return (
     <>
@@ -14,7 +15,17 @@ export default function RestaurantList({ restaurants }) {
               {r.name}
             </h2>
           </Link>
-          <p className="text-gray-600">{r.address}</p>
+          {/* Ulica */}
+          {r.street && <p className="text-gray-600">{r.street}</p>}
+          {/* Kod pocztowy i miasto */}
+          {(r.postal_code || r.city) && (
+            <p className="text-gray-600">
+              {[r.postal_code, r.city].filter(Boolean).join(" ")}
+            </p>
+          )}
+          {/* Kraj */}
+          {r.country && <p className="text-gray-600">{r.country}</p>}
+          <p className="text-gray-600">{r.phone}</p>
           <p>{r.description}</p>
         </div>
       ))}

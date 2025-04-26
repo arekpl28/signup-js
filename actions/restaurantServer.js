@@ -12,7 +12,10 @@ export async function addRestaurant(prevState, formData) {
   if (!user) return { status: "error", message: "Not authenticated" };
 
   const name = formData.get("name");
-  const address = formData.get("address");
+  const street = formData.get("street");
+  const postal_code = formData.get("postal_code");
+  const city = formData.get("city");
+  const country = formData.get("country");
   const phone = formData.get("phone");
   const opening_hours = formData.get("opening_hours");
   const description = formData.get("description");
@@ -30,7 +33,10 @@ export async function addRestaurant(prevState, formData) {
   const payload = {
     owner_id: user.id,
     name,
-    address,
+    street,
+    postal_code,
+    city,
+    country,
     phone,
     opening_hours,
     description,
@@ -84,7 +90,9 @@ export async function getAllActiveRestaurants() {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("restaurants")
-    .select("id, name, address, description")
+    .select(
+      "id, name, street, postal_code, city, country, phone, opening_hours, description"
+    )
     .eq("is_active", true);
 
   if (error) {
@@ -101,8 +109,8 @@ export async function getRestaurantById(id) {
   const { data, error } = await supabase
     .from("restaurants")
     .select(
-      "id, name, address, description, phone, opening_hours, currency_code"
-    ) // <-- DODAJ TO!
+      "id, name, street, postal_code, city, country, phone, opening_hours, description, currency_code"
+    )
     .eq("id", id)
     .single();
 

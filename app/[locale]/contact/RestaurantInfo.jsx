@@ -1,7 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
-import RestaurantForm from "./RestaurantForm";
+import { useState } from "react";
 import {
   Building,
   MapPin,
@@ -10,82 +9,76 @@ import {
   StickyNote,
   Pencil,
   Banknote,
-  X,
 } from "lucide-react";
+import RestaurantFormField from "./RestaurantFormField";
 
 export default function RestaurantInfo({ data }) {
-  const [isEditing, setIsEditing] = useState(false);
-  const modalRef = useRef(null);
+  // Które pole edytujesz?
+  const [editingField, setEditingField] = useState(null);
 
-  useEffect(() => {
-    function handleClickOutside(e) {
-      if (modalRef.current && !modalRef.current.contains(e.target)) {
-        setIsEditing(false);
-      }
-    }
-
-    if (isEditing) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isEditing]);
-
+  // Wszystkie pola i ich nazwy
   const info = [
-    { icon: Building, label: "Nazwa", value: data.name },
-    { icon: MapPin, label: "Adres", value: data.address },
-    { icon: Phone, label: "Telefon", value: data.phone },
-    { icon: Clock, label: "Godziny otwarcia", value: data.opening_hours },
-    { icon: StickyNote, label: "Opis", value: data.description },
-    { icon: Banknote, label: "Waluta", value: data.currency_code },
+    { key: "name", icon: Building, label: "Nazwa", value: data.name },
+    { key: "street", icon: MapPin, label: "Ulica", value: data.street },
+    {
+      key: "postal_code",
+      icon: MapPin,
+      label: "Kod pocztowy",
+      value: data.postal_code,
+    },
+    { key: "city", icon: MapPin, label: "Miasto", value: data.city },
+    { key: "country", icon: MapPin, label: "Kraj", value: data.country },
+    { key: "phone", icon: Phone, label: "Telefon", value: data.phone },
+    {
+      key: "opening_hours",
+      icon: Clock,
+      label: "Godziny otwarcia",
+      value: data.opening_hours,
+    },
+    {
+      key: "description",
+      icon: StickyNote,
+      label: "Opis",
+      value: data.description,
+    },
+    {
+      key: "currency_code",
+      icon: Banknote,
+      label: "Waluta",
+      value: data.currency_code,
+    },
   ];
 
   return (
-    <>
-      <div className="space-y-4 mb-6">
-        {info.map(({ icon: Icon, label, value }) => (
-          <div
-            key={label}
-            className="flex items-start gap-3 border px-4 py-3 rounded bg-white shadow"
-          >
-            <Icon className="w-5 h-5 mt-1 text-gray-600" />
-            <div>
-              <div className="text-xs text-gray-500">{label}</div>
-              <div className="font-medium text-black">{value || "-"}</div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <button
-        onClick={() => setIsEditing(true)}
-        className="flex items-center gap-2 bg-black text-white py-2 px-4 rounded hover:opacity-90"
-      >
-        <Pencil className="w-4 h-4" />
-        Edytuj
-      </button>
-
-      {isEditing && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
-          <div
-            ref={modalRef}
-            className="bg-white p-6 rounded shadow w-[400px] relative"
-          >
-            <button
-              onClick={() => setIsEditing(false)}
-              className="absolute top-2 right-2 text-gray-600"
-            >
-              <X className="w-4 h-4" />
-            </button>
-            <RestaurantForm
-              initialData={data}
-              onSuccess={() => setIsEditing(false)}
-            />
+    <div className="space-y-4 mb-6">
+      {info.map(({ key, icon: Icon, label, value }) => (
+        <div
+          key={key}
+          className="flex items-center gap-3 border px-4 py-3 rounded bg-white shadow group"
+        >
+          <Icon className="w-5 h-5 mt-1 text-gray-600" />
+          <div className="flex-1">
+            <div className="text-xs text-gray-500">{label}</div>
+            {editingField === key ? (
+              <RestaurantFormField
+                field={key}
+                value={value}
+                initialData={data}
+                onDone={() => setEditingField(null)}
+              />
+            ) : (
+              <div
+                className="font-medium text-black cursor-pointer group-hover:underline"
+                onClick={() => setEditingField(key)}
+                title="Kliknij, by edytować"
+              >
+                {value || "-"}
+                <Pencil className="inline w-4 h-4 ml-2 text-gray-400" />
+              </div>
+            )}
           </div>
         </div>
-      )}
-    </>
+      ))}
+    </div>
   );
 }

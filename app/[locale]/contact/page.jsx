@@ -1,6 +1,6 @@
 import { getRestaurantForCurrentUser } from "@/actions/restaurantServer";
 import RestaurantInfo from "./RestaurantInfo";
-import RestaurantForm from "./RestaurantForm";
+import RestaurantFormField from "./RestaurantFormField";
 
 export default async function RestaurantPage() {
   const restaurant = await getRestaurantForCurrentUser();
@@ -20,7 +20,7 @@ export default async function RestaurantPage() {
               Nie masz jeszcze dodanej restauracji. Wypełnij dane, aby ją
               stworzyć:
             </div>
-            <RestaurantForm />
+            <RestaurantFormField />
           </>
         )}
       </section>
