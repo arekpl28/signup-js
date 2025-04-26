@@ -9,6 +9,7 @@ import {
   Clock,
   StickyNote,
   Pencil,
+  Banknote,
   X,
 } from "lucide-react";
 
@@ -38,6 +39,7 @@ export default function RestaurantInfo({ data }) {
     { icon: Phone, label: "Telefon", value: data.phone },
     { icon: Clock, label: "Godziny otwarcia", value: data.opening_hours },
     { icon: StickyNote, label: "Opis", value: data.description },
+    { icon: Banknote, label: "Waluta", value: data.currency_code },
   ];
 
   return (

@@ -40,7 +40,7 @@ export default function MenuListWrapper() {
             key={meal.meal_id}
             title={meal.meal_name}
             image={meal.image_url}
-            price={`${meal.price_value}`}
+            price={`${meal.price_value} ${meal.currency_symbol || ""}`}
             ingredients={meal.ingredients?.map((i) => i.name).join(", ")}
             allergens={meal.allergens?.map((a) => a.name).join(", ")}
             glutenFree={meal.gluten_free}

@@ -17,9 +17,14 @@ export async function addRestaurant(prevState, formData) {
   const opening_hours = formData.get("opening_hours");
   const description = formData.get("description");
   const restaurant_id = formData.get("restaurant_id");
+  const currency_code = formData.get("currency_code"); // <-- DODAJ TO!
 
   if (!name || name.trim() === "") {
     return { status: "error", message: "Nazwa restauracji jest wymagana." };
+  }
+
+  if (!currency_code) {
+    return { status: "error", message: "Waluta jest wymagana." };
   }
 
   const payload = {
@@ -29,6 +34,7 @@ export async function addRestaurant(prevState, formData) {
     phone,
     opening_hours,
     description,
+    currency_code, // <-- DODAJ TO!
   };
 
   let error;
@@ -94,7 +100,9 @@ export async function getRestaurantById(id) {
 
   const { data, error } = await supabase
     .from("restaurants")
-    .select("id, name, address, description, phone, opening_hours")
+    .select(
+      "id, name, address, description, phone, opening_hours, currency_code"
+    ) // <-- DODAJ TO!
     .eq("id", id)
     .single();
 
