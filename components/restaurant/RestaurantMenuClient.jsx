@@ -35,6 +35,7 @@ export default function RestaurantMenuClient({ restaurant, meals }) {
         {filteredMeals.map((meal) => (
           <MealCard
             key={meal.id}
+            meal_number={meal.meal_number}
             title={meal.name}
             image={meal.image_url}
             price={`${meal.price_value ?? "?"} ${meal.currency_symbol || ""}`}

@@ -20,6 +20,7 @@ export default function MealModal({ isOpen, onClose, meal }) {
           </button>
           {/* NAZWA */}
           <DialogTitle className="text-2xl font-bold text-center mb-2">
+            {meal.meal_number ? `${meal.meal_number}. ` : ""}
             {meal.name}
           </DialogTitle>
           {/* OBRAZEK */}

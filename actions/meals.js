@@ -56,6 +56,7 @@ export async function submitMeal(form) {
     image_url,
     gluten_free,
     spiciness,
+    meal_number: form.meal_number,
   };
 
   let meal;

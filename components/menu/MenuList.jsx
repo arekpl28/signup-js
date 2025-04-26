@@ -38,6 +38,7 @@ export default function MenuListWrapper() {
         {filteredMeals.map((meal) => (
           <MealCard
             key={meal.meal_id}
+            meal_number={meal.meal_number}
             title={meal.meal_name}
             image={meal.image_url}
             price={`${meal.price_value} ${meal.currency_symbol || ""}`}
@@ -48,6 +49,7 @@ export default function MenuListWrapper() {
             onClick={() => {
               setSelectedMeal({
                 meal_id: meal.meal_id,
+                meal_number: meal.meal_number,
                 name: meal.meal_name,
                 price: meal.price_value,
                 category: meal.category_id,

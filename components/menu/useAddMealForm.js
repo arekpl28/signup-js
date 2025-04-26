@@ -12,6 +12,7 @@ export function useAddMealForm(
   passedCategories = []
 ) {
   const [form, setForm] = useState({
+    meal_number: "",
     name: "",
     price: "",
     category: "",
@@ -43,6 +44,7 @@ export function useAddMealForm(
       );
       console.log(initialMeal);
       setForm({
+        meal_number: initialMeal.meal_number || "",
         name: initialMeal.name || "",
         price: initialMeal.price || "",
         category: initialMeal.category || "",
@@ -91,6 +93,7 @@ export function useAddMealForm(
 
     const result = await submitMeal({
       meal_id: form.meal_id,
+      meal_number: form.meal_number,
       name: form.name,
       price_value: form.price,
       category_id: form.category,

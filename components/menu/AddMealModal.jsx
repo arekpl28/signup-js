@@ -40,6 +40,17 @@ export default function AddMealModal({ isOpen, onClose, meal, categories }) {
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-3">
             <input
+              name="meal_number"
+              type="number"
+              placeholder="Numer w menu"
+              className="border p-2 rounded"
+              onChange={handleChange}
+              value={form.meal_number || ""}
+              min={1}
+              disabled={isSubmitting}
+              required // jeśli zawsze wymagane
+            />
+            <input
               name="name"
               placeholder="Nazwa"
               className="border p-2 rounded"

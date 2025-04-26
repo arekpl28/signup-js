@@ -3,6 +3,7 @@ import glutenFreeIcon from "@/public/gluten3.png";
 import chiliIcon from "@/public/chili2.png";
 
 export default function MealCard({
+  meal_number,
   title,
   image,
   price,
@@ -19,7 +20,10 @@ export default function MealCard({
     >
       <div className="flex items-center gap-2 mt-1 ">
         <div className="flex-1 text-center">
-          <h3 className="text-lg text-black font-semibold">{title}</h3>
+          <h3 className="text-lg text-black font-semibold">
+            {meal_number ? `${meal_number}. ` : ""}
+            {title}
+          </h3>
         </div>
       </div>
       {image ? (
