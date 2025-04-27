@@ -21,6 +21,7 @@ export async function addRestaurant(prevState, formData) {
   const description = formData.get("description");
   const restaurant_id = formData.get("restaurant_id");
   const currency_code = formData.get("currency_code"); // <-- DODAJ TO!
+  const image_url = formData.get("image_url");
 
   if (!name || name.trim() === "") {
     return { status: "error", message: "Nazwa restauracji jest wymagana." };
@@ -41,11 +42,23 @@ export async function addRestaurant(prevState, formData) {
     opening_hours,
     description,
     currency_code, // <-- DODAJ TO!
+    image_url,
   };
 
   let error;
 
   if (restaurant_id) {
+    const { data: oldRestaurant } = await supabase
+      .from("restaurants")
+      .select("image_url")
+      .eq("id", restaurant_id)
+      .single();
+
+    // 🔽 usuń stare zdjęcie jeśli zostało nadpisane
+    if (oldRestaurant?.image_url && oldRestaurant.image_url !== image_url) {
+      await deleteRestaurantImageServer(oldRestaurant.image_url);
+    }
+
     ({ error } = await supabase
       .from("restaurants")
       .update(payload)
@@ -120,4 +133,23 @@ export async function getRestaurantById(id) {
   }
 
   return data;
+}
+
+export async function deleteRestaurantImageServer(imageUrl) {
+  const supabase = await createClient();
+
+  try {
+    const path = imageUrl.split("/restaurant-images/")[1];
+    if (!path) return;
+
+    const { error } = await supabase.storage
+      .from("restaurant-images")
+      .remove([path]);
+
+    if (error) {
+      console.error("Błąd przy usuwaniu zdjęcia restauracji:", error);
+    }
+  } catch (err) {
+    console.error("deleteRestaurantImageServer error:", err);
+  }
 }

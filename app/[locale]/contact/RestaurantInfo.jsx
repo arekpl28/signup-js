@@ -9,6 +9,7 @@ import {
   StickyNote,
   Pencil,
   Banknote,
+  Camera,
 } from "lucide-react";
 import RestaurantFormField from "./RestaurantFormField";
 
@@ -18,6 +19,13 @@ export default function RestaurantInfo({ data }) {
 
   // Wszystkie pola i ich nazwy
   const info = [
+    {
+      key: "image",
+      icon: Camera,
+      label: "Zdjęcie restauracji",
+      value: data.image_url, // <-- nazwa pola z bazy (np. image_url)
+      isImage: true,
+    },
     { key: "name", icon: Building, label: "Nazwa", value: data.name },
     { key: "street", icon: MapPin, label: "Ulica", value: data.street },
     {
@@ -51,7 +59,7 @@ export default function RestaurantInfo({ data }) {
 
   return (
     <div className="space-y-4 mb-6">
-      {info.map(({ key, icon: Icon, label, value }) => (
+      {info.map(({ key, icon: Icon, label, value, isImage }) => (
         <div
           key={key}
           className="flex items-center gap-3 border px-4 py-3 rounded bg-white shadow group"
@@ -65,6 +73,15 @@ export default function RestaurantInfo({ data }) {
                 value={value}
                 initialData={data}
                 onDone={() => setEditingField(null)}
+              />
+            ) : isImage ? (
+              // PODGLĄD ZDJĘCIA
+              <img
+                src={value || "/no-image.png"}
+                alt="Zdjęcie restauracji"
+                className="w-full max-w-xs h-32 object-cover rounded cursor-pointer border"
+                onClick={() => setEditingField(key)}
+                title="Kliknij, by zmienić zdjęcie"
               />
             ) : (
               <div
