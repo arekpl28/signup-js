@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { addRestaurant } from "@/actions/restaurantServer";
 import { useCurrencies } from "@/utils/useCurrencies";
-import { uploadRestaurantImage } from "@/utils/uploadRestaurantImage"; // dodaj ten import
+import { uploadRestaurantImage } from "@/utils/uploadRestaurantImage";
 
 export default function RestaurantFormField({
   field,
@@ -12,26 +12,27 @@ export default function RestaurantFormField({
   onDone,
 }) {
   const [inputValue, setInputValue] = useState(value || "");
-  const [file, setFile] = useState(null); // do pliku
+  const [file, setFile] = useState(null);
   const [state, setState] = useState(null);
   const [loading, setLoading] = useState(false);
   const { data: currencies = [] } = useCurrencies();
 
-  // Typ pola
   const isTextarea = field === "description";
   const isSelect = field === "currency_code";
   const isImage = field === "image";
 
-  // Submit tylko jednego pola
   const handleSave = async (e) => {
     e.preventDefault();
     setLoading(true);
+    console.log("ID RESTAURACJI:", initialData.id);
 
     const formData = new FormData();
     formData.set("restaurant_id", initialData.id);
 
+    // Główna różnica: zawsze przekazuj name!
+    if (initialData.name) formData.set("name", initialData.name);
+
     if (isImage && file) {
-      // Najpierw upload pliku do storage
       const url = await uploadRestaurantImage(file);
       if (!url) {
         setState({
@@ -41,12 +42,21 @@ export default function RestaurantFormField({
         setLoading(false);
         return;
       }
-      formData.set("image_url", url); // nazwa kolumny w bazie!
+      formData.set("image_url", url);
     } else {
-      formData.set(field, inputValue);
+      if (field === "currency_code") {
+        // jeśli nie wybrano waluty, usuń z formData (nie wysyłaj pustej wartości!)
+        if (inputValue) {
+          formData.set("currency_code", inputValue);
+        } else {
+          formData.delete("currency_code");
+        }
+      } else {
+        formData.set(field, inputValue);
+      }
     }
 
-    // Dodaj pozostałe pola żeby nie nadpisać pustym
+    // Dołóż resztę wartości z initialData, żeby nie nadpisać pustym (oprócz 'id')
     Object.entries(initialData).forEach(([k, v]) => {
       if (!formData.has(k) && k !== "id") formData.set(k, v || "");
     });
@@ -57,7 +67,6 @@ export default function RestaurantFormField({
     if (res.status === "success") onDone();
   };
 
-  // UI
   if (isImage) {
     return (
       <form
@@ -93,7 +102,7 @@ export default function RestaurantFormField({
     );
   }
 
-  // POZOSTAŁE POLA:
+  // Pozostałe pola (tekstowe, textarea, select)
   return (
     <form onSubmit={handleSave} className="flex gap-2 items-center text-black">
       {isSelect ? (

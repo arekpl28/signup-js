@@ -8,18 +8,18 @@ export async function uploadRestaurantImage(file) {
   const supabase = createClient();
 
   // 🔽 kompresja
-  const compressedFile = await imageCompression(file, {
-    maxSizeMB: 0.3, // Maksymalnie 0.5 MB
-    maxWidthOrHeight: 800, // Maksymalna szerokość/wysokość
-    useWebWorker: true,
-  });
+  // const compressedFile = await imageCompression(file, {
+  //   maxSizeMB: 0.3, // Maksymalnie 0.5 MB
+  //   maxWidthOrHeight: 800, // Maksymalna szerokość/wysokość
+  //   useWebWorker: true,
+  // });
 
   const fileExt = file.name.split(".").pop();
   const fileName = `${uuidv4()}.${fileExt}`;
 
   const { data, error } = await supabase.storage
     .from("restaurant-images")
-    .upload(fileName, compressedFile, {
+    .upload(fileName, file, {
       cacheControl: "3600",
       upsert: false,
     });

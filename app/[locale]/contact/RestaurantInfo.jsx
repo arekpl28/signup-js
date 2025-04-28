@@ -1,29 +1,33 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Building,
   MapPin,
   Phone,
-  Clock,
   StickyNote,
   Pencil,
   Banknote,
   Camera,
+  Clock,
 } from "lucide-react";
 import RestaurantFormField from "./RestaurantFormField";
+import OpeningHoursList from "@/components/restaurant/OpeningHoursList";
+import { saveRestaurantHour } from "@/actions/restaurantServer";
 
 export default function RestaurantInfo({ data }) {
-  // Które pole edytujesz?
   const [editingField, setEditingField] = useState(null);
+  const [updating, setUpdating] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [openingHours, setOpeningHours] = useState(data.opening_hours || []);
 
-  // Wszystkie pola i ich nazwy
   const info = [
     {
       key: "image",
       icon: Camera,
       label: "Zdjęcie restauracji",
-      value: data.image_url, // <-- nazwa pola z bazy (np. image_url)
+      value: data.image_url,
       isImage: true,
     },
     { key: "name", icon: Building, label: "Nazwa", value: data.name },
@@ -38,12 +42,6 @@ export default function RestaurantInfo({ data }) {
     { key: "country", icon: MapPin, label: "Kraj", value: data.country },
     { key: "phone", icon: Phone, label: "Telefon", value: data.phone },
     {
-      key: "opening_hours",
-      icon: Clock,
-      label: "Godziny otwarcia",
-      value: data.opening_hours,
-    },
-    {
       key: "description",
       icon: StickyNote,
       label: "Opis",
@@ -56,6 +54,11 @@ export default function RestaurantInfo({ data }) {
       value: data.currency_code,
     },
   ];
+  console.log("DATA z backa:", data);
+  // useEffect(() => {
+  //   setOpeningHours(data.opening_hours || []);
+  // }, [data.opening_hours]);
+  // console.log(openingHours);
 
   return (
     <div className="space-y-4 mb-6">
@@ -75,7 +78,6 @@ export default function RestaurantInfo({ data }) {
                 onDone={() => setEditingField(null)}
               />
             ) : isImage ? (
-              // PODGLĄD ZDJĘCIA
               <img
                 src={value || "/no-image.png"}
                 alt="Zdjęcie restauracji"
@@ -96,6 +98,49 @@ export default function RestaurantInfo({ data }) {
           </div>
         </div>
       ))}
+
+      {/* --- Godziny otwarcia --- */}
+      <div className="flex items-start gap-3 border px-2 py-1 rounded text-black bg-white shadow group">
+        <Clock className="w-5 h-5 mt-1 text-gray-600" />
+        <div className="flex-1">
+          <div className="text-xs text-gray-500 mb-1">Godziny otwarcia</div>
+          <OpeningHoursList
+            hours={openingHours}
+            onEdit={async (weekday, value) => {
+              setUpdating(true);
+              setError("");
+              setSuccess("");
+              try {
+                await saveRestaurantHour(data.id, weekday, value);
+                // 🔽 Aktualizuj lokalny stan
+                setOpeningHours((prev) => {
+                  if (value) {
+                    // Dodaj/aktualizuj dzień
+                    const withoutDay = prev.filter(
+                      (h) => h.weekday !== weekday
+                    );
+                    return [...withoutDay, value];
+                  } else {
+                    // Usuwasz (zamknięte)
+                    return prev.filter((h) => h.weekday !== weekday);
+                  }
+                });
+                setSuccess("Zapisano!");
+              } catch (e) {
+                setError("Błąd zapisu godzin.");
+              }
+              setUpdating(false);
+            }}
+          />
+          {/* {updating && (
+            <div className="text-xs text-gray-600 mt-2">Zapisywanie...</div>
+          )}
+          {error && <div className="text-xs text-red-600 mt-2">{error}</div>}
+          {success && (
+            <div className="text-xs text-green-600 mt-2">{success}</div>
+          )} */}
+        </div>
+      </div>
     </div>
   );
 }
