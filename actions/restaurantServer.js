@@ -131,7 +131,7 @@ export async function getAllActiveRestaurants() {
     .from("restaurants")
     .select(
       `
-      id, name, street, postal_code, city, country, phone, description,
+      id,image_url, name, street, postal_code, city, country, phone, description,
       opening_hours:restaurant_hours (
         weekday, open_time, close_time
       )
