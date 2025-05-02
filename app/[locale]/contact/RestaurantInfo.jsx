@@ -54,7 +54,7 @@ export default function RestaurantInfo({ data }) {
       value: data.currency_code,
     },
   ];
-  console.log("DATA z backa:", data);
+  // console.log("DATA z backa:", data);
   // useEffect(() => {
   //   setOpeningHours(data.opening_hours || []);
   // }, [data.opening_hours]);

@@ -4,7 +4,7 @@ export default function RestaurantList({ restaurants }) {
   if (!restaurants?.length) {
     return <p>Brak aktywnych restauracji.</p>;
   }
-  console.log(restaurants);
+  // console.log(restaurants);
 
   const formatTime = (time) => {
     const date = new Date(`1970-01-01T${time}`); // Usunięcie "Z", by nie używać UTC

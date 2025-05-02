@@ -24,7 +24,7 @@ export default function RestaurantFormField({
   const handleSave = async (e) => {
     e.preventDefault();
     setLoading(true);
-    console.log("ID RESTAURACJI:", initialData.id);
+    // console.log("ID RESTAURACJI:", initialData.id);
 
     const formData = new FormData();
     formData.set("restaurant_id", initialData.id);

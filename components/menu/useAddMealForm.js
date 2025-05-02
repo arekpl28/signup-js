@@ -42,7 +42,7 @@ export function useAddMealForm(
       const validAllergens = (initialMeal.allergens || []).filter(
         (a) => a?.id && a?.name
       );
-      console.log(initialMeal);
+      // console.log(initialMeal);
       setForm({
         meal_number: initialMeal.meal_number || "",
         name: initialMeal.name || "",

@@ -71,7 +71,7 @@ export default function MenuListWrapper() {
           setSelectedMeal(null);
 
           if (!updatedMeal) return;
-          console.log("updatedMeal:", updatedMeal);
+          // console.log("updatedMeal:", updatedMeal);
           queryClient.setQueryData(["meals"], (prevMeals = []) => {
             const index = prevMeals.findIndex(
               (m) => m.meal_id === updatedMeal.meal_id
