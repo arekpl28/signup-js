@@ -22,7 +22,7 @@ const Navbar = async (props) => {
     <nav className="border-b bg-background w-full flex items-center">
       <div className="flex w-full items-center justify-between my-4">
         <Link href="/" className="font-bold ">
-          Restauracje
+          {t("restaurants")}
         </Link>
         {user && (
           <Link className="font-bold" href="/menu">

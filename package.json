@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "i18nexus pull && next dev",
-    "build": "i18nexus pull && next build",
-    "start": "i18nexus pull && next start",
+    "dev": "i18nexus pull --path ./locales && next dev",
+    "build": "i18nexus pull --path ./locales && next build",
+    "start": "i18nexus pull --path ./locales && next start",
     "lint": "next lint"
   },
   "dependencies": {
