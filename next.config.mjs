@@ -15,6 +15,16 @@ const nextConfig = {
       },
     ],
   },
+
+  // Aby HMR widział zmiany także w katalogu /locales
+  webpack(config, { dev }) {
+    if (dev) {
+      config.watchOptions = {
+        ignored: ["**/node_modules/**", "!**/locales/**"],
+      };
+    }
+    return config;
+  },
 };
 
 export default nextConfig;

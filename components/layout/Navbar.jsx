@@ -3,16 +3,10 @@ import Link from "next/link";
 import Logout from "../auth/Logout";
 import initTranslations from "@/app/i18n";
 import LanguageSwitcher from "./LanguageSwitcher";
-import { extractLocale } from "@/lib/locale";
 
-const Navbar = async (props) => {
-  // Wyodrębnienie bieżącej lokalizacji językowej
-  const locale = await extractLocale(props);
-
-  // Inicjalizacja tłumaczeń dla namespace "home"
+const Navbar = async ({ locale }) => {
   const { t } = await initTranslations(locale, ["home"]);
 
-  // Pobranie danych użytkownika z Supabase
   const supabase = await createClient();
   const {
     data: { user },
@@ -48,7 +42,6 @@ const Navbar = async (props) => {
               <Logout />
             </>
           )}
-          {/* Przełącznik języka */}
           <LanguageSwitcher currentLocale={locale} />
         </div>
       </div>

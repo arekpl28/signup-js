@@ -25,10 +25,8 @@ export default function LanguageSwitcher() {
 
   const changeLocale = (e) => {
     const newLocale = e.target.value;
-    // Zapisz cookie (opcjonalnie) dla przyszłych requestów
     document.cookie = `NEXT_LOCALE=${newLocale}; Path=/; SameSite=Lax`;
-    // Next.js sam doda prefiks newLocale
-    router.push(pathname + search, undefined, { locale: newLocale });
+    router.push(`/${newLocale}${pathname}${search}`);
   };
 
   return (
