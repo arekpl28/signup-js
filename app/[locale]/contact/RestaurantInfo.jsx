@@ -14,6 +14,7 @@ import {
 import RestaurantFormField from "./RestaurantFormField";
 import OpeningHoursList from "@/components/restaurant/OpeningHoursList";
 import { saveRestaurantHour } from "@/actions/restaurantServer";
+import { useTranslation } from "react-i18next";
 
 export default function RestaurantInfo({ data }) {
   const [editingField, setEditingField] = useState(null);
@@ -21,36 +22,42 @@ export default function RestaurantInfo({ data }) {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [openingHours, setOpeningHours] = useState(data.opening_hours || []);
+  const { t } = useTranslation();
 
   const info = [
     {
       key: "image",
       icon: Camera,
-      label: "Zdjęcie restauracji",
+      label: t("restaurant_image"),
       value: data.image_url,
       isImage: true,
     },
-    { key: "name", icon: Building, label: "Nazwa", value: data.name },
-    { key: "street", icon: MapPin, label: "Ulica", value: data.street },
+    {
+      key: "name",
+      icon: Building,
+      label: t("restaurant_name"),
+      value: data.name,
+    },
+    { key: "street", icon: MapPin, label: t("street"), value: data.street },
     {
       key: "postal_code",
       icon: MapPin,
-      label: "Kod pocztowy",
+      label: t("postal_code"),
       value: data.postal_code,
     },
-    { key: "city", icon: MapPin, label: "Miasto", value: data.city },
-    { key: "country", icon: MapPin, label: "Kraj", value: data.country },
-    { key: "phone", icon: Phone, label: "Telefon", value: data.phone },
+    { key: "city", icon: MapPin, label: t("city"), value: data.city },
+    { key: "country", icon: MapPin, label: t("country"), value: data.country },
+    { key: "phone", icon: Phone, label: t("phone_number"), value: data.phone },
     {
       key: "description",
       icon: StickyNote,
-      label: "Opis",
+      label: t("restaurant_short_description"),
       value: data.description,
     },
     {
       key: "currency_code",
       icon: Banknote,
-      label: "Waluta",
+      label: t("currency"),
       value: data.currency_code,
     },
   ];
@@ -80,16 +87,16 @@ export default function RestaurantInfo({ data }) {
             ) : isImage ? (
               <img
                 src={value || "/no-image.png"}
-                alt="Zdjęcie restauracji"
+                alt={t("restaurant_image")}
                 className="w-full max-w-xs h-32 object-cover rounded cursor-pointer border"
                 onClick={() => setEditingField(key)}
-                title="Kliknij, by zmienić zdjęcie"
+                title={t("click_to_change_image")}
               />
             ) : (
               <div
                 className="font-medium text-black cursor-pointer group-hover:underline"
                 onClick={() => setEditingField(key)}
-                title="Kliknij, by edytować"
+                title={t("click_to_edit")}
               >
                 {value || "-"}
                 <Pencil className="inline w-4 h-4 ml-2 text-gray-400" />
@@ -103,7 +110,7 @@ export default function RestaurantInfo({ data }) {
       <div className="flex items-start gap-3 border px-2 py-1 rounded text-black bg-white shadow group">
         <Clock className="w-5 h-5 mt-1 text-gray-600" />
         <div className="flex-1">
-          <div className="text-xs text-gray-500 mb-1">Godziny otwarcia</div>
+          <div className="text-xs text-gray-500 mb-1">{t("opening_hours")}</div>
           <OpeningHoursList
             hours={openingHours}
             onEdit={async (weekday, value) => {
@@ -125,9 +132,9 @@ export default function RestaurantInfo({ data }) {
                     return prev.filter((h) => h.weekday !== weekday);
                   }
                 });
-                setSuccess("Zapisano!");
+                setSuccess(t("saved_successfully"));
               } catch (e) {
-                setError("Błąd zapisu godzin.");
+                setError(t("opening_hours_save_error"));
               }
               setUpdating(false);
             }}

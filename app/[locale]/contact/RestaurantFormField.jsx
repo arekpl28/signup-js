@@ -4,6 +4,7 @@ import { useState } from "react";
 import { addRestaurant } from "@/actions/restaurantServer";
 import { useCurrencies } from "@/utils/useCurrencies";
 import { uploadRestaurantImage } from "@/utils/uploadRestaurantImage";
+import { useTranslation } from "react-i18next";
 
 export default function RestaurantFormField({
   field,
@@ -16,6 +17,7 @@ export default function RestaurantFormField({
   const [state, setState] = useState(null);
   const [loading, setLoading] = useState(false);
   const { data: currencies = [] } = useCurrencies();
+  const { t } = useTranslation();
 
   const isTextarea = field === "description";
   const isSelect = field === "currency_code";
@@ -37,7 +39,7 @@ export default function RestaurantFormField({
       if (!url) {
         setState({
           status: "error",
-          message: "Błąd przy przesyłaniu zdjęcia!",
+          message: t("image_upload_error"),
         });
         setLoading(false);
         return;
@@ -85,7 +87,7 @@ export default function RestaurantFormField({
           className="text-blue-600 text-sm px-2"
           disabled={loading}
         >
-          {loading ? "Wysyłanie..." : "Zapisz"}
+          {loading ? t("uploading") : t("save")}
         </button>
         <button
           type="button"
@@ -93,7 +95,7 @@ export default function RestaurantFormField({
           onClick={onDone}
           disabled={loading}
         >
-          Anuluj
+          {t("cancel")}
         </button>
         {state?.status === "error" && (
           <span className="text-red-600 ml-2 text-xs">{state.message}</span>
@@ -112,7 +114,7 @@ export default function RestaurantFormField({
           onChange={(e) => setInputValue(e.target.value)}
           required
         >
-          <option value="">Wybierz walutę</option>
+          <option value="">{t("select_currency")}</option>
           {currencies.map((cur) => (
             <option key={cur.code} value={cur.code}>
               {cur.name} ({cur.symbol})
@@ -138,7 +140,7 @@ export default function RestaurantFormField({
         className="text-blue-600 text-sm px-2"
         disabled={loading}
       >
-        {loading ? "Wysyłanie..." : "Zapisz"}
+        {loading ? t("uploading") : t("save")}
       </button>
       <button
         type="button"
@@ -146,7 +148,7 @@ export default function RestaurantFormField({
         onClick={onDone}
         disabled={loading}
       >
-        Anuluj
+        {t("cancel")}
       </button>
       {state?.status === "error" && (
         <span className="text-red-600 ml-2 text-xs">{state.message}</span>

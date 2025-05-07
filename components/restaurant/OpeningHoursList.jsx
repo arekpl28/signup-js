@@ -2,21 +2,22 @@
 
 "use client";
 import { useState } from "react";
-
-const dniTygodnia = [
-  "Poniedziałek",
-  "Wtorek",
-  "Środa",
-  "Czwartek",
-  "Piątek",
-  "Sobota",
-  "Niedziela",
-];
+import { useTranslation } from "react-i18next";
 
 export default function OpeningHoursList({ hours = [], onEdit }) {
   // Zamieniamy tablicę na mapę: { 0: {open_time...}, 1: {...} }
   const hoursMap = Object.fromEntries(hours.map((h) => [h.weekday, h]));
   const [editingDay, setEditingDay] = useState(null);
+  const { t } = useTranslation();
+  const dniTygodnia = [
+    t("monday"),
+    t("tuesday"),
+    t("wednesday"),
+    t("thursday"),
+    t("friday"),
+    t("saturday"),
+    t("sunday"),
+  ];
 
   return (
     <div className="flex flex-col gap-2">

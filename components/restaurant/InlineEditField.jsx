@@ -1,3 +1,5 @@
+import initTranslations from "@/app/i18n";
+import { extractLocale } from "@/lib/locale";
 import { useState } from "react";
 
 /**
@@ -10,7 +12,8 @@ import { useState } from "react";
  * - onSave: Funkcja async wywoływana po zmianie (np. (newValue) => { ... })
  * - disabled: Czy pole zablokowane (opcjonalnie)
  */
-export default function InlineEditField({
+export default async function InlineEditField({
+  props,
   label,
   value,
   type = "text",
@@ -20,6 +23,8 @@ export default function InlineEditField({
   const [editing, setEditing] = useState(false);
   const [val, setVal] = useState(value ?? "");
   const [loading, setLoading] = useState(false);
+  const locale = await extractLocale(props);
+  const { t } = await initTranslations(locale, ["home"]);
 
   // Gdy klikniesz tekst - edytuj
   function startEdit() {
@@ -74,9 +79,7 @@ export default function InlineEditField({
           onClick={startEdit}
           className={`block cursor-pointer py-1 px-2 rounded ${disabled ? "bg-gray-100 text-gray-400" : "hover:bg-gray-50"}`}
         >
-          {value || (
-            <span className="text-gray-300">Kliknij, by edytować...</span>
-          )}
+          {value || <span className="text-gray-300">{t("click_to_edit")}</span>}
         </span>
       )}
     </div>

@@ -1,11 +1,13 @@
 "use client";
 import { useState } from "react";
 import { addRestaurant } from "@/actions/restaurantServer";
+import { useTranslation } from "react-i18next";
 
 export default function RestaurantCreateForm({ onSuccess }) {
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const { t } = useTranslation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,7 +29,7 @@ export default function RestaurantCreateForm({ onSuccess }) {
     <form onSubmit={handleSubmit} className="flex flex-col gap-4 text-black">
       <input
         name="name"
-        placeholder="Nazwa restauracji"
+        placeholder={t("restaurant_name")}
         required
         value={name}
         onChange={(e) => setName(e.target.value)}
@@ -38,7 +40,7 @@ export default function RestaurantCreateForm({ onSuccess }) {
         className="bg-black text-white py-2 rounded hover:opacity-90"
         disabled={loading}
       >
-        {loading ? "Tworzenie..." : "Utwórz restaurację"}
+        {loading ? t("creating") : t("create_restaurant")}
       </button>
       {error && <p className="text-red-600 text-sm">❌ Błąd: {error}</p>}
     </form>
