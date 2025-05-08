@@ -5,6 +5,7 @@ import { X } from "lucide-react";
 import { useAddMealForm } from "./useAddMealForm";
 import AllergenSelectorModal from "./AllergenSelectorModal";
 import IngredientSelectorModal from "./IngredientSelectorModal";
+import { useTranslation } from "react-i18next";
 
 export default function AddMealModal({ isOpen, onClose, meal, categories }) {
   const {
@@ -23,6 +24,7 @@ export default function AddMealModal({ isOpen, onClose, meal, categories }) {
     setIsIngredientModalOpen,
     isSubmitting, // <-- add this line
   } = useAddMealForm(onClose, meal, categories);
+  const { t } = useTranslation();
 
   return (
     <Dialog open={isOpen} onClose={onClose} className="fixed z-50 inset-0">
@@ -31,7 +33,7 @@ export default function AddMealModal({ isOpen, onClose, meal, categories }) {
         <DialogPanel className="bg-white rounded-xl p-6 w-[90%] max-w-lg text-black">
           <div className="flex justify-between items-center mb-4">
             <DialogTitle className="text-xl font-bold">
-              Dodaj posiłek
+              {t("add_meal")}
             </DialogTitle>
             <button onClick={() => onClose(null)}>
               <X />
@@ -42,7 +44,7 @@ export default function AddMealModal({ isOpen, onClose, meal, categories }) {
             <input
               name="meal_number"
               type="number"
-              placeholder="Numer w menu"
+              placeholder={t("meal_number")}
               className="border p-2 rounded"
               onChange={handleChange}
               value={form.meal_number || ""}
@@ -52,7 +54,7 @@ export default function AddMealModal({ isOpen, onClose, meal, categories }) {
             />
             <input
               name="name"
-              placeholder="Nazwa"
+              placeholder={t("meal_name")}
               className="border p-2 rounded"
               onChange={handleChange}
               value={form.name}
@@ -63,7 +65,7 @@ export default function AddMealModal({ isOpen, onClose, meal, categories }) {
               name="price"
               type="number"
               step="0.01"
-              placeholder="Cena"
+              placeholder={t("meal_price")}
               className="border p-2 rounded"
               onChange={handleChange}
               value={form.price}
@@ -78,16 +80,18 @@ export default function AddMealModal({ isOpen, onClose, meal, categories }) {
               value={form.category}
               disabled={isSubmitting}
             >
-              <option value="">-- Wybierz kategorię --</option>
+              <option value="">{t("select_category_placeholder")}</option>
               {categories.map((cat) => (
                 <option key={cat.id} value={cat.id}>
-                  {cat.name}
+                  {t(cat.name)}
+                  {/* {cat.name} */}
                 </option>
               ))}
             </select>
             <div className="flex items-center gap-2">
               <label htmlFor="gluten_free" className="text-sm text-black">
-                Bezglutenowy (gluten free){"  "}
+                {t("gluten_free")}
+                {"  "}
                 <input
                   type="checkbox"
                   id="gluten_free"
@@ -105,7 +109,7 @@ export default function AddMealModal({ isOpen, onClose, meal, categories }) {
             </div>
             <div className="flex items-center gap-2">
               <label htmlFor="spiciness" className="text-sm text-black">
-                Ostrość:
+                {t("meal_spiciness")}
               </label>
               <select
                 id="spiciness"
@@ -120,10 +124,10 @@ export default function AddMealModal({ isOpen, onClose, meal, categories }) {
                 disabled={isSubmitting}
                 className="border p-2 rounded"
               >
-                <option value={0}>Brak</option>
-                <option value={1}>Łagodny 🌶️</option>
-                <option value={2}>Ostry 🌶️🌶️</option>
-                <option value={3}>Bardzo ostry 🌶️🌶️🌶️</option>
+                <option value={0}>{t("spiciness_none")}</option>
+                <option value={1}>{t("spiciness_mild")} 🌶️</option>
+                <option value={2}>{t("spiciness_hot")} 🌶️🌶️</option>
+                <option value={3}>{t("spiciness_very_hot")} 🌶️🌶️🌶️</option>
               </select>
             </div>
             <div>
@@ -133,7 +137,7 @@ export default function AddMealModal({ isOpen, onClose, meal, categories }) {
                 onClick={() => setIsIngredientModalOpen(true)}
                 disabled={isSubmitting}
               >
-                Wybierz składniki
+                {t("select_ingredients")}
               </button>
               <div className="text-sm text-gray-700">
                 {selectedIngredients.length > 0 ? (
@@ -144,7 +148,7 @@ export default function AddMealModal({ isOpen, onClose, meal, categories }) {
                       .join(", ")}
                   </span>
                 ) : (
-                  <span>Brak wybranych składników.</span>
+                  <span>{t("no_ingredients_selected")}</span>
                 )}
               </div>
             </div>
@@ -155,7 +159,7 @@ export default function AddMealModal({ isOpen, onClose, meal, categories }) {
                 onClick={() => setIsAllergenModalOpen(true)}
                 disabled={isSubmitting}
               >
-                Wybierz alergeny
+                {t("select_allergens")}
               </button>
               <div className="text-sm text-gray-700 ">
                 {selectedAllergens.length > 0 ? (
@@ -166,7 +170,7 @@ export default function AddMealModal({ isOpen, onClose, meal, categories }) {
                       .join(", ")}
                   </span>
                 ) : (
-                  <span>Brak wybranych alergenów.</span>
+                  <span>{t("no_allergens_selected")}</span>
                 )}
               </div>
             </div>
@@ -174,7 +178,7 @@ export default function AddMealModal({ isOpen, onClose, meal, categories }) {
               <div className="mb-2">
                 <img
                   src={form.image}
-                  alt="Podgląd zdjęcia"
+                  alt={t("image_preview")}
                   className="max-h-40 rounded border"
                 />
               </div>
@@ -201,7 +205,7 @@ export default function AddMealModal({ isOpen, onClose, meal, categories }) {
                   onClick={handleDelete}
                   disabled={isSubmitting}
                 >
-                  Usuń
+                  {t("delete")}
                 </button>
               )}
               <button
@@ -211,7 +215,7 @@ export default function AddMealModal({ isOpen, onClose, meal, categories }) {
                 } bg-black text-white py-2 rounded hover:opacity-90 disabled:opacity-50`}
                 disabled={isSubmitting}
               >
-                {isSubmitting ? "Zapisywanie..." : "Zapisz"}
+                {isSubmitting ? t("saving") : t("save")}
               </button>
             </div>
           </form>

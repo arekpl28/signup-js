@@ -1,6 +1,7 @@
 import Image from "next/image";
 import glutenFreeIcon from "@/public/gluten3.png";
 import chiliIcon from "@/public/chili2.png";
+import { useTranslation } from "react-i18next";
 
 export default function MealCard({
   meal_number,
@@ -13,6 +14,7 @@ export default function MealCard({
   spiciness,
   onClick,
 }) {
+  const { t } = useTranslation();
   return (
     <div
       className="w-60 h-auto border rounded-lg shadow bg-white overflow-hidden cursor-pointer hover:shadow-lg transition"
@@ -32,16 +34,16 @@ export default function MealCard({
         </div>
       ) : (
         <div className="w-full h-[140px] bg-gray-100 flex items-center justify-center text-gray-400">
-          Brak zdjęcia
+          {t("no_image")}
         </div>
       )}
       <div className="text-center font-bold text-black">{price}</div>
       <div className="p-3">
         <p className="line-clamp-2 text-sm text-green-500 mb-1">
-          <strong>Składniki:</strong> {ingredients}
+          <strong>{t("ingredients")}</strong> {ingredients}
         </p>
         <p className="line-clamp-2 text-sm text-red-500 mb-1">
-          <strong>Alergeny:</strong> {allergens}
+          <strong>{t("allergens")}</strong> {allergens}
         </p>
         <div className="flex -ml-2 items-center justify-between">
           <div className="flex items-center ">
@@ -49,7 +51,7 @@ export default function MealCard({
               <Image
                 key={i}
                 src={chiliIcon}
-                alt="Spicy"
+                alt={t("meal_spiciness")}
                 width={24}
                 height={24}
                 className={i > 0 ? "-ml-3" : ""}
@@ -60,7 +62,7 @@ export default function MealCard({
           {glutenFree && (
             <Image
               src={glutenFreeIcon}
-              alt="Gluten free"
+              alt={t("gluten_free")}
               width={24}
               height={24}
             />

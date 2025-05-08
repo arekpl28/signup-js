@@ -3,6 +3,7 @@
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
+import { useTranslation } from "react-i18next";
 
 export default function AllergenSelectorModal({
   isOpen,
@@ -12,6 +13,7 @@ export default function AllergenSelectorModal({
 }) {
   const [allergens, setAllergens] = useState([]);
   const [selectedAllergens, setSelectedAllergens] = useState(selected || []);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchAllergens = async () => {
@@ -62,19 +64,20 @@ export default function AllergenSelectorModal({
                   checked={selectedAllergens.some((a) => a.id === allergen.id)}
                   onChange={() => toggleAllergen(allergen)}
                 />
-                {allergen.name}
+                {t(allergen.name)}
+                {/* {allergen.name} */}
               </label>
             ))}
           </div>
           <div className="flex justify-end gap-2 mt-4">
             <button onClick={onClose} className="text-gray-600">
-              Anuluj
+              {t("cancel")}
             </button>
             <button
               onClick={handleSave}
               className="bg-black text-white px-4 py-2 rounded hover:opacity-90"
             >
-              Zapisz
+              {t("save")}
             </button>
           </div>
         </DialogPanel>

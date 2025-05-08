@@ -3,6 +3,7 @@ import { useState } from "react";
 import MealCard from "@/components/menu/MealCard";
 import MealModal from "@/components/restaurant/MealModal";
 import CategoryTabs from "@/components/menu/CategoryTabs"; // Dodajesz import!
+import { useTranslation } from "react-i18next";
 
 export default function RestaurantMenuClient({ restaurant, meals }) {
   const [selectedMeal, setSelectedMeal] = useState(null);
@@ -10,6 +11,7 @@ export default function RestaurantMenuClient({ restaurant, meals }) {
   const categoriesInMeals = [
     ...new Set(meals.map((meal) => meal.category_name).filter(Boolean)),
   ];
+  const { t } = useTranslation();
 
   // Filtrowanie posiłków po kategorii
   const filteredMeals = selectedCategory
@@ -29,7 +31,7 @@ export default function RestaurantMenuClient({ restaurant, meals }) {
         onSelect={setSelectedCategory}
       />
 
-      {filteredMeals.length === 0 && <p>Brak dostępnych posiłków.</p>}
+      {filteredMeals.length === 0 && <p>{t("no_meals_available")}</p>}
 
       <div className="flex flex-wrap gap-4">
         {filteredMeals.map((meal) => (
@@ -39,8 +41,8 @@ export default function RestaurantMenuClient({ restaurant, meals }) {
             title={meal.name}
             image={meal.image_url}
             price={`${meal.price_value ?? "?"} ${meal.currency_symbol || ""}`}
-            ingredients={meal.ingredients?.map((i) => i.name).join(", ")}
-            allergens={meal.allergens?.map((a) => a.name).join(", ")}
+            ingredients={meal.ingredients?.map((i) => t(i.name)).join(", ")}
+            allergens={meal.allergens?.map((a) => t(a.name)).join(", ")}
             glutenFree={meal.gluten_free}
             spiciness={meal.spiciness}
             onClick={() => setSelectedMeal(meal)}

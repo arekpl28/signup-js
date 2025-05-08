@@ -1,20 +1,24 @@
 "use client";
 
-const categories = [
-  "Wszystkie",
-  "Przystawki",
-  "Zupy",
-  "Sałatki",
-  "Dania główne",
-  "Pizze",
-  "Desery",
-  "Napoje zimne",
-  "Napoje gorące",
-  "Alkohole",
-  "Dodatki",
-];
+import { useTranslation } from "react-i18next";
+
+// const categories = [
+//   "Wszystkie",
+//   "Przystawki",
+//   "Zupy",
+//   "Sałatki",
+//   "Dania główne",
+//   "Pizze",
+//   "Desery",
+//   "Napoje zimne",
+//   "Napoje gorące",
+//   "Alkohole",
+//   "Dodatki",
+// ];
 
 export default function CategoryTabs({ categories, onSelect, selected }) {
+  const { t } = useTranslation();
+
   return (
     <div className="w-full flex flex-wrap gap-3 py-4 px-2">
       <div
@@ -25,7 +29,7 @@ export default function CategoryTabs({ categories, onSelect, selected }) {
             : "bg-white text-black hover:bg-gray-100"
         }`}
       >
-        Wszystkie
+        {t("all")}
       </div>
       {categories.map((name) => {
         const isActive = selected === name;
@@ -39,7 +43,7 @@ export default function CategoryTabs({ categories, onSelect, selected }) {
                 : "bg-white text-black hover:bg-gray-100"
             }`}
           >
-            {name}
+            {t(name)}
           </div>
         );
       })}

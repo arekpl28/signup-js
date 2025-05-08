@@ -2,9 +2,11 @@
 
 import { Dialog, DialogTitle, DialogPanel } from "@headlessui/react";
 import { X } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export default function MealModal({ isOpen, onClose, meal }) {
   if (!meal) return null;
+  const { t } = useTranslation();
 
   return (
     <Dialog open={isOpen} onClose={onClose} className="fixed z-50 inset-0">
@@ -37,29 +39,30 @@ export default function MealModal({ isOpen, onClose, meal }) {
           </div>
           {/* KATEGORIA */}
           <div className="mb-2">
-            <b>Kategoria:</b> {meal.category_name}
+            <b>{t("category")}</b> {t(meal.category_name)}
           </div>
           {/* SKŁADNIKI */}
           <div className="mb-2">
-            <b>Składniki:</b>{" "}
+            <b>{t("ingredients")}</b>{" "}
             {Array.isArray(meal.ingredients) && meal.ingredients.length > 0
-              ? meal.ingredients.map((i) => i.name).join(", ")
+              ? meal.ingredients.map((i) => t(i.name)).join(", ")
               : "Brak"}
           </div>
           {/* ALERGENY */}
           <div className="mb-2">
-            <b>Alergeny:</b>{" "}
+            <b>{t("allergens")}</b>{" "}
             {Array.isArray(meal.allergens) && meal.allergens.length > 0
-              ? meal.allergens.map((a) => a.name).join(", ")
+              ? meal.allergens.map((a) => t(a.name)).join(", ")
               : "Brak"}
           </div>
           {/* BEZGLUTENOWY */}
           <div className="mb-2">
-            <b>Bezglutenowy:</b> {meal.gluten_free ? "Tak" : "Nie"}
+            <b>{t("gluten_free") + ":"}</b>{" "}
+            {meal.gluten_free ? t("yes") : t("no")}
           </div>
           {/* OSTROŚĆ */}
           <div className="mb-2">
-            <b>Ostrość:</b>{" "}
+            <b>{t("meal_spiciness")}</b>{" "}
             {meal.spiciness > 0 ? "🌶️".repeat(meal.spiciness) : "Brak"}
           </div>
         </DialogPanel>

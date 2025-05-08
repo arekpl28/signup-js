@@ -3,6 +3,7 @@
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
+import { useTranslation } from "react-i18next";
 
 export default function IngredientSelectorModal({
   isOpen,
@@ -14,6 +15,7 @@ export default function IngredientSelectorModal({
   const [selectedIngredients, setSelectedIngredients] = useState(
     selected || []
   );
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchIngredients = async () => {
@@ -55,7 +57,7 @@ export default function IngredientSelectorModal({
       <div className="fixed inset-0 flex items-center justify-center">
         <DialogPanel className="bg-white rounded-xl p-6 w-[90%] max-w-lg text-black">
           <DialogTitle className="text-xl font-bold mb-4">
-            Wybierz składniki
+            {t("select_ingredients")}
           </DialogTitle>
           <div className="flex flex-wrap gap-2 max-h-64 overflow-y-auto text-black">
             {ingredients.map((ingredient) => (
@@ -76,13 +78,13 @@ export default function IngredientSelectorModal({
           </div>
           <div className="flex justify-end gap-2 mt-4">
             <button onClick={onClose} className="text-gray-600">
-              Anuluj
+              {t("cancel")}
             </button>
             <button
               onClick={handleSave}
               className="bg-black text-white px-4 py-2 rounded hover:opacity-90"
             >
-              Zapisz
+              {t("save")}
             </button>
           </div>
         </DialogPanel>

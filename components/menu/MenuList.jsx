@@ -8,12 +8,14 @@ import AddMealSection from "./AddMealSection";
 import AddMealModal from "./AddMealModal";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCategories } from "@/utils/useCategories";
+import { useTranslation } from "react-i18next";
 
 export default function MenuListWrapper() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedMeal, setSelectedMeal] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
 
   const { data: meals = [], isLoading, error } = useMeals();
   const { data: categories = [] } = useCategories();
@@ -42,8 +44,8 @@ export default function MenuListWrapper() {
             title={meal.meal_name}
             image={meal.image_url}
             price={`${meal.price_value} ${meal.currency_symbol || ""}`}
-            ingredients={meal.ingredients?.map((i) => i.name).join(", ")}
-            allergens={meal.allergens?.map((a) => a.name).join(", ")}
+            ingredients={meal.ingredients?.map((i) => t(i.name)).join(", ")}
+            allergens={meal.allergens?.map((a) => t(a.name)).join(", ")}
             glutenFree={meal.gluten_free}
             spiciness={meal.spiciness}
             onClick={() => {
