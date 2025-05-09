@@ -20,7 +20,6 @@ export async function signUp(formData) {
   const supabase = await createClient();
 
   const credentials = {
-    username: formData.get("username"),
     email: formData.get("email"),
     password: formData.get("password"),
   };
@@ -28,11 +27,6 @@ export async function signUp(formData) {
   const { error, data } = await supabase.auth.signUp({
     email: credentials.email,
     password: credentials.password,
-    options: {
-      data: {
-        username: credentials.username,
-      },
-    },
   });
 
   if (error) {
@@ -72,7 +66,6 @@ export async function signIn(formData) {
   if (!existingUser) {
     const { error: insertError } = await supabase.from("user_profiles").insert({
       email: data?.user?.email,
-      username: data?.user?.user_metadata?.username,
     });
     if (insertError) {
       return { status: insertError?.message, user: null };

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import AuthButton from "./AuthButton";
 import { forgotPassword } from "@/actions/auth";
+import InputField from "@/components/ui/InputField";
 
 const ForgotPassword = () => {
   const [error, setError] = useState(null);
@@ -29,15 +30,11 @@ const ForgotPassword = () => {
     <div>
       <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-200">
-            Email
-          </label>
-          <input
+          <InputField
             type="email"
-            placeholder="Email"
-            id="Email"
             name="email"
-            className="mt-1 w-full px-4 p-2 h-10 rounded-md border border-gray-200 bg-white text-sm text-gray-700"
+            id="email"
+            placeholder="Email"
           />
         </div>
 

@@ -5,6 +5,7 @@ import AuthButton from "./AuthButton";
 import { useRouter } from "next/navigation";
 import { signIn } from "@/actions/auth";
 import { useTranslation } from "react-i18next";
+import InputField from "@/components/ui/InputField";
 
 const LoginForm = () => {
   const [error, setError] = useState(null);
@@ -33,27 +34,19 @@ const LoginForm = () => {
     <div>
       <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-200">
-            Email
-          </label>
-          <input
+          <InputField
             type="email"
-            placeholder="Email"
-            id="Email"
             name="email"
-            className="mt-1 w-full px-4 p-2  h-10 rounded-md border border-gray-200 bg-white text-sm text-gray-700"
+            id="email"
+            placeholder="Email"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-200">
-            {t("password")}
-          </label>
-          <input
+          <InputField
             type="password"
-            placeholder={t("password")}
             name="password"
             id="password"
-            className="mt-1 w-full px-4 p-2  h-10 rounded-md border border-gray-200 bg-white text-sm text-gray-700"
+            placeholder={t("password")}
           />
         </div>
         <div className="mt-4">

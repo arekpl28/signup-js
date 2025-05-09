@@ -3,6 +3,7 @@ import LoginForm from "@/components/auth/LoginForm";
 import LoginGithub from "@/components/auth/LoginGithub";
 import { extractLocale } from "@/lib/locale";
 import Link from "next/link";
+import NeumorphicCard from "@/components/ui/NeumorphicCard";
 
 export default async function LoginPage(props) {
   const locale = await extractLocale(props);
@@ -10,25 +11,27 @@ export default async function LoginPage(props) {
 
   return (
     <div className="w-full flex mt-20 justify-center">
-      <section className="flex flex-col w-[400px]">
-        <h1 className="text-3xl w-full text-center font-bold mb-6">
+      <NeumorphicCard>
+        <h1 className="text-3xl w-full text-center font-bold mb-6 text-[var(--foreground)]">
           {t("sign_in")}
         </h1>
         <LoginForm />
         <LoginGithub />
-        <div className="mt-2 flex items-center">
-          <h1>{t("don't_have_an_account")}</h1>
-          <Link className="font-bold ml-2" href="/register">
-            {t("sign_up")}
-          </Link>
+        <div className="mt-4 text-center text-[var(--foreground)] text-sm">
+          <p>
+            {t("don't_have_an_account")}{" "}
+            <Link className="font-bold underline" href="/register">
+              {t("sign_up")}
+            </Link>
+          </p>
         </div>
-        <div className="mt-2 flex items-center">
-          <h1>{t("forgot_your_password")}</h1>
-          <Link className="font-bold ml-2" href="/forgot-password">
+        <div className="mt-4 text-center text-[var(--foreground)] text-sm">
+          <span>{t("forgot_your_password")}</span>
+          <Link className="font-bold underline" href="/forgot-password">
             {t("reset_password")}
           </Link>
         </div>
-      </section>
+      </NeumorphicCard>
     </div>
   );
 }

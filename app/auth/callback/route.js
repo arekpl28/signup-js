@@ -28,7 +28,6 @@ export async function GET(request) {
         const { error: dbError } = await supabase.from("user_profiles").insert({
           id: data?.user?.id,
           email: data?.user?.email,
-          username: data?.user?.user_metadata?.user_name,
         });
         if (dbError) {
           console.error(
