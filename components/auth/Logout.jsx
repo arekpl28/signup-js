@@ -16,7 +16,7 @@ const Logout = () => {
   };
 
   return (
-    <form onSubmit={handleLogout} className="w-full">
+    <form onSubmit={handleLogout} className="w-auto">
       <button
         type="submit"
         disabled={loading}

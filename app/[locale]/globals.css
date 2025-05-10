@@ -22,6 +22,19 @@
   }
 }
 
+@layer utilities {
+  .shadow-neumorphic {
+    box-shadow:
+      4px 4px 8px var(--shadow-dark),
+      -4px -4px 8px var(--shadow-light);
+  }
+  .shadow-neumorphic-inset {
+    box-shadow:
+      inset 2px 2px 5px var(--shadow-dark),
+      inset -2px -2px 5px var(--shadow-light);
+  }
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
