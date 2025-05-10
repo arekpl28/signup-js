@@ -4,15 +4,20 @@ import { useState } from "react";
 import { signOut } from "@/actions/auth";
 import { useTranslation } from "react-i18next";
 
-const Logout = () => {
+const Logout = ({ onClick }) => {
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
 
   const handleLogout = async (event) => {
     event.preventDefault();
-    setLoading(true);
-    await signOut();
-    setLoading(false);
+
+    if (onClick) onClick();
+
+    setTimeout(async () => {
+      setLoading(true);
+      await signOut();
+      setLoading(false);
+    }, 100);
   };
 
   return (

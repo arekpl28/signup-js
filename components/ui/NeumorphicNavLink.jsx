@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import { getPathWithoutLocale } from "@/utils/getPathWithoutLocale";
 
-const NeumorphicNavLink = ({ href, children }) => {
+const NeumorphicNavLink = ({ href, children, onClick }) => {
   const pathname = usePathname();
   const cleanPath = getPathWithoutLocale(pathname);
 
@@ -14,8 +14,9 @@ const NeumorphicNavLink = ({ href, children }) => {
   return (
     <Link href={href}>
       <div
+        onClick={onClick}
         className={clsx(
-          "px-4 py-2 rounded-xl text-sm shadow-neumorphic transition hover:brightness-95 active:shadow-neumorphic-inset",
+          "px-4 py-2 rounded-xl text-sm text-center shadow-neumorphic transition hover:brightness-95 active:shadow-neumorphic-inset",
           "bg-[var(--background)] text-[var(--foreground)]",
           isActive && "shadow-neumorphic-inset font-semibold brightness-90"
         )}

@@ -1,6 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/layout/Navbar";
+import Navbar from "@/components/layout/NavbarServer";
 import i18nConfig from "@/i18nConfig";
 import { dir } from "i18next";
 import TranslationsProvider from "@/components/layout/TranslationsProvider";
