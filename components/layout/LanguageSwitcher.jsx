@@ -26,7 +26,8 @@ export default function LanguageSwitcher() {
   const changeLocale = (e) => {
     const newLocale = e.target.value;
     document.cookie = `NEXT_LOCALE=${newLocale}; Path=/; SameSite=Lax`;
-    router.push(`/${newLocale}${pathname}${search}`);
+    // router.push(`/${newLocale}${pathname}${search}`);
+    router.push(pathname + search, undefined, { locale: newLocale });
   };
 
   return (
