@@ -25,22 +25,17 @@ const Navbar = async ({ locale }) => {
         )}
 
         <div className="flex items-center gap-x-5">
-          {user && <Link href="/contact">Restaurant</Link>}
+          {user && <Link href="/contact">Twoja restauracja</Link>}
         </div>
         <div className="flex items-center gap-x-5">
           {!user ? (
             <Link href="/login">
-              <div className="bg-blue-600 text-white text-sm px-4 py-2 rounded-sm">
+              <div className="px-4 py-2 rounded-xl bg-[var(--background)] text-[var(--foreground)] text-sm shadow-[4px_4px_8px_var(--shadow-dark),_-4px_-4px_8px_var(--shadow-light)] transition hover:brightness-95 active:shadow-[inset_2px_2px_5px_var(--shadow-dark),_inset_-2px_-2px_5px_var(--shadow-light)]">
                 {t("login")}
               </div>
             </Link>
           ) : (
-            <>
-              <div className="flex items-center gap-x-2 text-sm">
-                {user?.email}
-              </div>
-              <Logout />
-            </>
+            <Logout />
           )}
           <LanguageSwitcher currentLocale={locale} />
         </div>

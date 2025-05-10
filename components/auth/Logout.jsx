@@ -16,13 +16,15 @@ const Logout = () => {
   };
 
   return (
-    <div className="bg-gray-600 text-white text-sm px-4 py-2 rounded-md cursor-pointer">
-      <form onSubmit={handleLogout}>
-        <button type="submit" disabled={loading}>
-          {loading ? t("signing_out") : t("sign_out")}
-        </button>
-      </form>
-    </div>
+    <form onSubmit={handleLogout} className="w-full">
+      <button
+        type="submit"
+        disabled={loading}
+        className="w-full px-4 py-2 rounded-xl bg-[var(--background)] text-[var(--foreground)] text-sm shadow-[4px_4px_8px_var(--shadow-dark),_-4px_-4px_8px_var(--shadow-light)] transition hover:brightness-95 active:shadow-[inset_2px_2px_5px_var(--shadow-dark),_inset_-2px_-2px_5px_var(--shadow-light)]"
+      >
+        {loading ? t("signing_out") : t("sign_out")}
+      </button>
+    </form>
   );
 };
 

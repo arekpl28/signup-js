@@ -8,6 +8,7 @@ import {
 } from "next/navigation";
 import i18nConfig from "@/i18nConfig";
 import { Globe } from "lucide-react";
+import NeumorphicButtonWrapper from "@/components/ui/NeumorphicButtonWrapper";
 
 export default function LanguageSwitcher() {
   const { locale: currentLocale } = useParams();
@@ -32,10 +33,10 @@ export default function LanguageSwitcher() {
 
   return (
     <div className="relative inline-block">
-      <div className="flex items-center border border-gray-300 rounded-md px-2 py-1 text-sm cursor-pointer">
-        <Globe className="w-4 h-4 mr-1 text-gray-600" />
+      <NeumorphicButtonWrapper>
+        <Globe className="w-4 h-4 mr-2 text-[var(--foreground)]" />
         <span>{currentLocale?.toUpperCase()}</span>
-      </div>
+      </NeumorphicButtonWrapper>
       <select
         value={currentLocale || i18nConfig.defaultLocale}
         onChange={changeLocale}
