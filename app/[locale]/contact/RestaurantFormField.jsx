@@ -17,6 +17,7 @@ export default function RestaurantFormField({
   const [state, setState] = useState(null);
   const [loading, setLoading] = useState(false);
   const { data: currencies = [] } = useCurrencies();
+  const [preview, setPreview] = useState(null);
   const { t } = useTranslation();
 
   const isTextarea = field === "description";
@@ -71,34 +72,61 @@ export default function RestaurantFormField({
 
   if (isImage) {
     return (
-      <form
-        onSubmit={handleSave}
-        className="flex gap-2 items-center text-black"
-      >
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setFile(e.target.files[0])}
-          className="border px-2 py-1 rounded"
-          required
-        />
-        <button
-          type="submit"
-          className="text-blue-600 text-sm px-2"
-          disabled={loading}
-        >
-          {loading ? t("uploading") : t("save")}
-        </button>
-        <button
-          type="button"
-          className="text-gray-500 text-sm px-2"
-          onClick={onDone}
-          disabled={loading}
-        >
-          {t("cancel")}
-        </button>
+      <form onSubmit={handleSave} className="flex flex-col gap-2">
+        <label className="cursor-pointer justify-center text-sm flex items-center gap-2">
+          {/* <span className="text-gray-600">{t("restaurant_image")}</span> */}
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              const selected = e.target.files[0];
+              setFile(selected);
+              if (selected) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                  setPreview(e.target.result);
+                };
+                reader.readAsDataURL(selected);
+              }
+            }}
+            className="hidden"
+            required
+          />
+          <div className="px-4 py-2 rounded shadow-neumorphic bg-[var(--background)] text-[var(--foreground)] hover:brightness-95 transition text-sm cursor-pointer border border-transparent hover:border-gray-300">
+            📷 {t("choose_file")}
+          </div>
+        </label>
+
+        {preview && (
+          <img
+            src={preview}
+            alt="Preview"
+            className="w-full max-w-xs h-32 object-cover rounded-xl border"
+          />
+        )}
+
+        <div className="flex justify-center gap-3">
+          <button
+            type="button"
+            className="text-gray-500 text-sm px-2"
+            onClick={onDone}
+            disabled={loading}
+          >
+            {t("cancel")}
+          </button>
+          <button
+            type="submit"
+            className="text-blue-600 text-sm px-2"
+            disabled={loading}
+          >
+            {loading ? t("uploading") : t("save")}
+          </button>
+        </div>
+
         {state?.status === "error" && (
-          <span className="text-red-600 ml-2 text-xs">{state.message}</span>
+          <span className="text-red-600 text-xs text-center">
+            {state.message}
+          </span>
         )}
       </form>
     );
@@ -106,7 +134,7 @@ export default function RestaurantFormField({
 
   // Pozostałe pola (tekstowe, textarea, select)
   return (
-    <form onSubmit={handleSave} className="flex gap-2 items-center text-black">
+    <form onSubmit={handleSave} className="flex gap-2 items-center">
       {isSelect ? (
         <select
           className="border px-2 py-1 rounded"
@@ -123,25 +151,18 @@ export default function RestaurantFormField({
         </select>
       ) : isTextarea ? (
         <textarea
-          className="border px-2 py-1 rounded"
+          className="w-full px-3 py-2 rounded-xl bg-[var(--background)] text-[var(--foreground)] placeholder:text-gray-500 shadow-[inset_4px_4px_8px_var(--shadow-dark),inset_-4px_-4px_8px_var(--shadow-light)] focus:outline-none focus:shadow-neumorphic-inset transition-shadow"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           rows={2}
         />
       ) : (
         <input
-          className="border px-2 py-1 rounded"
+          className="w-full px-3 py-2 rounded-xl bg-[var(--background)] text-[var(--foreground)] placeholder:text-gray-500 shadow-[inset_4px_4px_8px_var(--shadow-dark),inset_-4px_-4px_8px_var(--shadow-light)] focus:outline-none focus:shadow-neumorphic-inset transition-shadow"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
         />
       )}
-      <button
-        type="submit"
-        className="text-blue-600 text-sm px-2"
-        disabled={loading}
-      >
-        {loading ? t("uploading") : t("save")}
-      </button>
       <button
         type="button"
         className="text-gray-500 text-sm px-2"
@@ -149,6 +170,13 @@ export default function RestaurantFormField({
         disabled={loading}
       >
         {t("cancel")}
+      </button>
+      <button
+        type="submit"
+        className="text-blue-600 text-sm px-2"
+        disabled={loading}
+      >
+        {loading ? t("uploading") : t("save")}
       </button>
       {state?.status === "error" && (
         <span className="text-red-600 ml-2 text-xs">{state.message}</span>

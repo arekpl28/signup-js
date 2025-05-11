@@ -72,7 +72,7 @@ export default function RestaurantInfo({ data }) {
       {info.map(({ key, icon: Icon, label, value, isImage }) => (
         <div
           key={key}
-          className="flex items-center gap-3 border px-4 py-3 rounded bg-white shadow group"
+          className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[var(--background)] shadow-neumorphic group"
         >
           <Icon className="w-5 h-5 mt-1 text-gray-600" />
           <div className="flex-1">
@@ -94,12 +94,12 @@ export default function RestaurantInfo({ data }) {
               />
             ) : (
               <div
-                className="font-medium text-black cursor-pointer group-hover:underline"
+                className="flex items-center justify-between cursor-pointer"
                 onClick={() => setEditingField(key)}
                 title={t("click_to_edit")}
               >
-                {value || "-"}
-                <Pencil className="inline w-4 h-4 ml-2 text-gray-400" />
+                <span className="font-medium">{value || "-"}</span>
+                <Pencil className="w-4 h-4 text-gray-400 group-hover:text-blue-600 transition" />
               </div>
             )}
           </div>
@@ -107,7 +107,7 @@ export default function RestaurantInfo({ data }) {
       ))}
 
       {/* --- Godziny otwarcia --- */}
-      <div className="flex items-start gap-3 border px-2 py-1 rounded text-black bg-white shadow group">
+      <div className="flex items-start gap-3 px-4 py-3 rounded-xl bg-[var(--background)] shadow-neumorphic">
         <Clock className="w-5 h-5 mt-1 text-gray-600" />
         <div className="flex-1">
           <div className="text-xs text-gray-500 mb-1">{t("opening_hours")}</div>
@@ -139,13 +139,6 @@ export default function RestaurantInfo({ data }) {
               setUpdating(false);
             }}
           />
-          {/* {updating && (
-            <div className="text-xs text-gray-600 mt-2">Zapisywanie...</div>
-          )}
-          {error && <div className="text-xs text-red-600 mt-2">{error}</div>}
-          {success && (
-            <div className="text-xs text-green-600 mt-2">{success}</div>
-          )} */}
         </div>
       </div>
     </div>

@@ -26,7 +26,7 @@ export default function RestaurantCreateForm({ onSuccess }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4 text-black">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <input
         name="name"
         placeholder={t("restaurant_name")}

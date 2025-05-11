@@ -10,9 +10,9 @@ export default async function RestaurantPage(props) {
   const { t } = await initTranslations(locale, ["home"]);
 
   return (
-    <div className="w-full flex mt-20 justify-center">
-      <section className="flex flex-col w-[400px]">
-        <h1 className="text-3xl w-full text-center font-bold mb-6">
+    <div className="w-full flex mt-10 sm:mt-20 justify-center">
+      <section className="flex flex-col w-full max-w-[500px] p-6 sm:p-8 rounded-2xl bg-[var(--background)] ">
+        <h1 className="text-3xl text-center font-bold mb-6 text-[var(--foreground)]">
           {t("your_restaurant")}
         </h1>
 
